@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gastrack/controller/Authcontroller.dart';
+import 'package:gastrack/page/setting.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,7 +15,6 @@ class Home extends StatefulWidget {
 class _MyHomePageState extends State<Home> {
   List<Map<String, dynamic>> Data = [
     {
-      'no_pembayaran'
       'created_at': "12-12-2023",
       'total_tagihan': 20000,
     },
@@ -30,16 +30,14 @@ class _MyHomePageState extends State<Home> {
 
   int no = 0;
 
-  LogoutController _controller = LogoutController();
-
-  
-   @override
+  @override
   void initState() {
     setState(() {
       no = 1;
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -96,7 +94,12 @@ class _MyHomePageState extends State<Home> {
                       ),
                       InkWell(
                         onTap: () {
-                          _controller.logout();
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                child: const Profilsaya(),
+                                type: PageTransitionType.rightToLeft,
+                              ));
                         },
                         child: Image.asset(
                           "assets/icon/setting_icon.png",
@@ -202,41 +205,51 @@ class _MyHomePageState extends State<Home> {
                           )
                         ],
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.width * 0.20,
-                            width: MediaQuery.of(context).size.width * 0.20,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(128, 38, 198, 0.65),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey
-                                      .withOpacity(0.50), // Warna bayangan
-                                  spreadRadius:
-                                      0, // Seberapa jauh bayangan menyebar
-                                  blurRadius: 4, // Seberapa kabur bayangan
-                                  offset: const Offset(
-                                      4, 4), // Posisi bayangan (x, y)
-                                ),
-                              ],
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                child: const Profilsaya(),
+                                type: PageTransitionType.rightToLeft,
+                              ));
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.width * 0.20,
+                              width: MediaQuery.of(context).size.width * 0.20,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(128, 38, 198, 0.65),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.50), // Warna bayangan
+                                    spreadRadius:
+                                        0, // Seberapa jauh bayangan menyebar
+                                    blurRadius: 4, // Seberapa kabur bayangan
+                                    offset: const Offset(
+                                        4, 4), // Posisi bayangan (x, y)
+                                  ),
+                                ],
+                              ),
+                              child: Image.asset(
+                                "assets/icon/profil_icon.png",
+                              ),
                             ),
-                            child: Image.asset(
-                              "assets/icon/profil_icon.png",
-                            ),
-                          ),
-                          const Text(
-                            'Profil',
-                            style: TextStyle(
-                                height: 2,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 11,
-                                fontFamily: 'Poppins',
-                                color: Colors.black),
-                          )
-                        ],
+                            const Text(
+                              'Profil',
+                              style: TextStyle(
+                                  height: 2,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
