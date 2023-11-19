@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gastrack/animation/animations.dart';
 import 'package:gastrack/page/setting.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -15,26 +16,14 @@ class Home extends StatefulWidget {
 class _MyHomePageState extends State<Home> {
   List<Map<String, dynamic>> Data = [
     {
-      'created_at': "12-12-2023",
-      'total_tagihan': 20000,
-    },
-    {
-      'created_at': "12-12-2023",
-      'total_tagihan': 20000,
-    },
-    {
-      'created_at': "12-12-2023",
-      'total_tagihan': 20000,
+      'batas_pembayaran': "12-12-2023",
+      'total_pembayaran': 20000,
+      'status_pembayaran': "Belum bayar"
     },
   ];
 
-  int no = 0;
-
   @override
   void initState() {
-    setState(() {
-      no = 1;
-    });
     super.initState();
   }
 
@@ -67,7 +56,7 @@ class _MyHomePageState extends State<Home> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 50),
+                  margin: const EdgeInsets.only(top: 70),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -283,7 +272,7 @@ class _MyHomePageState extends State<Home> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: const Text(
-                      'Data Tagihan',
+                      'Tagihan Anda',
                       style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Poppins-bold',
@@ -297,56 +286,115 @@ class _MyHomePageState extends State<Home> {
                         physics: const BouncingScrollPhysics(),
                         child: Column(
                           children: Data.map((index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Tagihan ${(no++).toString()}',
-                                          style: const TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: 'Poppins-bold',
-                                              color: Colors.black),
-                                        ),
-                                        Text(
-                                          'Batas Pembayaran ${(index['created_at'])}',
-                                          style: const TextStyle(
-                                              fontSize: 8,
-                                              fontFamily: 'Poppins',
-                                              color: Colors.black),
-                                        ),
-                                        const Text(
-                                          'Total Tagihan',
-                                          style: TextStyle(
-                                              height: 2,
-                                              fontSize: 8,
-                                              fontFamily: 'Poppins',
-                                              color: Colors.black),
-                                        ),
-                                        Text(
-                                          'Rp${(index['total_tagihan']).toString()},-',
-                                          style: const TextStyle(
-                                            fontSize: 12,
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Batas Pembayaran',
+                                        style: TextStyle(
+                                            fontSize: 18,
                                             fontFamily: 'Poppins-bold',
-                                            color: Color.fromRGBO(
-                                                249, 1, 131, 1.0),
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        '${(index['batas_pembayaran'])}',
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            fontFamily: 'Poppins-bold',
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 15,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 250, 48, 48),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10)),
+                                    ),
+                                    child: Text(
+                                      '${(index['status_pembayaran'])}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Total Tagihan',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black),
+                                  ),
+                                  Text(
+                                    'Rp${(index['total_pembayaran']).toString()},-',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Poppins-bold',
+                                      color: Color.fromRGBO(249, 1, 131, 1.0),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 40),
+                                    child: FadeAnimation(
+                                      1.0,
+                                      Container(
+                                        width: 350,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(
+                                                  0.50), // Warna bayangan
+                                              spreadRadius:
+                                                  0, // Seberapa jauh bayangan menyebar
+                                              blurRadius:
+                                                  4, // Seberapa kabur bayangan
+                                              offset: const Offset(4,
+                                                  4), // Posisi bayangan (x, y)
+                                            ),
+                                          ],
+                                          color: const Color.fromRGBO(
+                                              249, 1, 131, 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        child: TextButton(
+                                          style: TextButton.styleFrom(
+                                            shape:
+                                                const RoundedRectangleBorder(),
+                                          ),
+                                          onPressed: () {
+                                            print("object");
+                                          },
+                                          child: const Text(
+                                            "Bayar Sekarang",
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 15,
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                            ),
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                    Image.asset(
-                                      "assets/icon/navigate_icon.png",
-                                    ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
                             );
                           }).toList(),
