@@ -24,14 +24,17 @@ class _MyHomePageState extends State<Coverpage> {
 
   @override
   void initState() {
+    setState(() {
+      
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
+      statusBarColor: Color.fromARGB(0, 0, 0, 0),
+      statusBarIconBrightness: Brightness.dark,
     ));
     return Scaffold(
       resizeToAvoidBottomInset: false,

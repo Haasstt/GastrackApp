@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
 
 class PesanPage extends StatefulWidget {
@@ -28,18 +29,6 @@ class _MyHomePageState extends State<PesanPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25), // Warna bayangan
-                    spreadRadius: 0, // Seberapa jauh bayangan menyebar
-                    blurRadius: 4, // Seberapa kabur bayangan
-                    offset: const Offset(0, 1), // Posisi bayangan (x, y)
-                  ),
-                ],
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,11 +39,12 @@ class _MyHomePageState extends State<PesanPage> {
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         width: double.infinity,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FadeAnimation(
                               0.5,
                               Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 width: double.infinity,
                                 height: 60,
                                 decoration: const BoxDecoration(
@@ -62,20 +52,80 @@ class _MyHomePageState extends State<PesanPage> {
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
                                 child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Akun',
+                                      'Form Pembelian Gas',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          fontFamily: 'Poppins',
-                                          color: Colors.black),
+                                        fontSize: 18,
+                                        fontFamily: 'Poppins-ExtraBold',
+                                        color: Color.fromRGBO(249, 1, 131, 1.0),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
+                            FadeAnimation(
+                              0.6, Form(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: const InputDecoration(
+                                      suffixIcon: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 20),
+                                          child: Text(
+                                            '/ bar',
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                            ),
+                                          )),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(40)),
+                                      ),
+                                      labelText: "Masukkan jumlah pesanan gas",
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          BounceAnimation(
+                            0.7, Container(
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 20
+                              ),
+                              width: 200,
+                              height: 50,
+                              child: ElevatedButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromRGBO(249, 1, 131, 1.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                },
+                                child: const Text(
+                                  "Pesan sekarang",
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 15,
+                                    color: Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           ],
                         ),
                       ),

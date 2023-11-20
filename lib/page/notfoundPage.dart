@@ -1,8 +1,16 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class NotFoundPage extends StatelessWidget {
+class NotFoundPage extends StatefulWidget {
   const NotFoundPage({super.key});
+
+  @override
+  State<NotFoundPage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<NotFoundPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/controller/Authcontroller.dart';
 // import 'package:gastrack/provider/UserProvider.dart';
 import 'package:page_transition/page_transition.dart';
@@ -62,33 +63,17 @@ class _MyHomePageState extends State<Profilsaya> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-    ));
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
-                top: 130, left: 10, right: 10, bottom: 10),
+                top: 120, left: 10, right: 10, bottom: 10),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.25), // Warna bayangan
-                    spreadRadius: 0, // Seberapa jauh bayangan menyebar
-                    blurRadius: 4, // Seberapa kabur bayangan
-                    offset: const Offset(0, 1), // Posisi bayangan (x, y)
-                  ),
-                ],
-              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -99,6 +84,7 @@ class _MyHomePageState extends State<Profilsaya> {
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         width: double.infinity,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FadeAnimation(
@@ -411,6 +397,9 @@ class _MyHomePageState extends State<Profilsaya> {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 15,
+                            ),
                             FadeAnimation(
                               0.7,
                               Container(
@@ -648,8 +637,8 @@ class _MyHomePageState extends State<Profilsaya> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: FadeAnimation(
+                    padding: const EdgeInsets.symmetric(vertical: 35),
+                    child: BounceAnimation(
                       1.0,
                       Container(
                         width: 350,
