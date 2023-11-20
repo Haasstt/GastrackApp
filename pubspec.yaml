@@ -72,7 +72,7 @@ flutter:
     - assets/bg/
     - assets/icon/
     - assets/rive/
-    - assets/js/
+    - assets/js/ 
   
   fonts:
     - family: Poppins

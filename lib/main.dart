@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gastrack/page/home.dart';
+import 'package:gastrack/page/homePage.dart';
 import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sp_util/sp_util.dart';

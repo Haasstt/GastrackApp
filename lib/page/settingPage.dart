@@ -10,8 +10,8 @@ import 'package:page_transition/page_transition.dart';
 // import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../animation/animations.dart';
-import 'pagenotfound.dart';
-import 'setting_dart.dart';
+import 'notfoundPage.dart';
+import 'settingdetailPage.dart';
 
 class Profilsaya extends StatefulWidget {
   const Profilsaya({super.key});
@@ -67,11 +67,14 @@ class _MyHomePageState extends State<Profilsaya> {
       statusBarBrightness: Brightness.light,
     ));
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 110, left: 15, right: 15, bottom: 15),
+            padding: const EdgeInsets.only(
+                top: 130, left: 10, right: 10, bottom: 10),
             child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               decoration: BoxDecoration(
@@ -86,17 +89,14 @@ class _MyHomePageState extends State<Profilsaya> {
                   ),
                 ],
               ),
-              child: SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    FadeAnimation(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: FadeAnimation(
                       0.5,
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 350,
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
                         width: double.infinity,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,7 +143,7 @@ class _MyHomePageState extends State<Profilsaya> {
                                     Navigator.push(
                                         context,
                                         PageTransition(
-                                          child: Changename(),
+                                          child: const Changename(),
                                           type: PageTransitionType.rightToLeft,
                                         ));
                                   },
@@ -646,57 +646,57 @@ class _MyHomePageState extends State<Profilsaya> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50),
-                      child: FadeAnimation(
-                        1.0,
-                        Container(
-                          width: 350,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.black)),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              shape: const RoundedRectangleBorder(),
-                            ),
-                            onPressed: () {
-                              _showConfirmationDialog(context);
-                            },
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Keluar",
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.logout_outlined,
-                                  size: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: FadeAnimation(
+                      1.0,
+                      Container(
+                        width: 350,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.black)),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(),
+                          ),
+                          onPressed: () {
+                            _showConfirmationDialog(context);
+                          },
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Keluar",
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
                                   color: Color.fromARGB(255, 0, 0, 0),
-                                )
-                              ],
-                            ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.logout_outlined,
+                                size: 15,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
           Container(
+            padding: const EdgeInsets.only(top: 40),
             width: double.infinity,
-            height: 100,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
@@ -710,38 +710,39 @@ class _MyHomePageState extends State<Profilsaya> {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 )),
-            child:Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    height: 50,
-                    width: 50,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Color.fromRGBO(255, 255, 255, 1),
-                      ),
+            child: Row(
+              children: [
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  height: 50,
+                  width: 50,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Color.fromRGBO(255, 255, 255, 1),
                     ),
                   ),
-                  const Expanded(
-                    child: Text(
-                      "Pengaturan",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: "Poppins-bold",
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
+                ),
+                const Expanded(
+                  child: Text(
+                    "Pengaturan",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: "Poppins-bold",
+                      fontSize: 20,
+                      color: Colors.white,
                     ),
                   ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+              ],
+            ),
           ),
         ],
       ),

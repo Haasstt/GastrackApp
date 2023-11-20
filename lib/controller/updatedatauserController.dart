@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gastrack/provider/UserProvider.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+// import 'package:gastrack/provider/UserProvider.dart';
+// import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sp_util/sp_util.dart';
-import "Authcontroller.dart";
+// import "Authcontroller.dart";
 
 class UpdateDataUserController extends GetxController {
   String draggedAddress = "";
@@ -27,6 +27,8 @@ class UpdateDataUserController extends GetxController {
       "alamat": alamat,
       "koordinat": koordinat,
     };
+
+    print(data);
 
     // UserProvider().updateAlamatuser(id, data).then((value) {
     //   var pesan = value.body['message'];
@@ -64,6 +66,7 @@ class UpdateDataUserController extends GetxController {
       "name": name,
     };
 
+    print(data);
     // UserProvider().updateUsernameuser(id, data).then((value) {
     //   var pesan = value.body['message'];
     //   if (value.statusCode == 200) {
@@ -100,6 +103,7 @@ class UpdateDataUserController extends GetxController {
       "email": email,
     };
 
+    print(data);
     // UserProvider().updateEmailuser(id, data).then((value) {
     //   if (value.statusCode == 200) {
     //     Get.snackbar(
@@ -128,6 +132,7 @@ class UpdateDataUserController extends GetxController {
       "no_hp": telp,
     };
 
+    print(data);
     // UserProvider().updateNoTelpuser(id, data).then((value) {
     //   var pesan = value.body['message'];
     //   if (value.statusCode == 200) {
@@ -168,6 +173,7 @@ class UpdateDataUserController extends GetxController {
       "new_password_confirmation": KonfirmasiPass,
     };
 
+    print(data);
     // UserProvider().updatePassworduser(id, data).then((value) {
     //   var pesan = value.body['message'];
     //   if (value.statusCode == 200) {

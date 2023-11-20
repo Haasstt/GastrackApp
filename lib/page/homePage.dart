@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_final_fields, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gastrack/animation/animations.dart';
-import 'package:gastrack/page/setting.dart';
+import 'package:gastrack/page/pesanPage.dart';
+import 'package:gastrack/page/settingPage.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Home extends StatefulWidget {
@@ -29,10 +29,6 @@ class _MyHomePageState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-    ));
     return Scaffold(
       body: Column(
         children: [
@@ -122,41 +118,52 @@ class _MyHomePageState extends State<Home> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.width * 0.20,
-                            width: MediaQuery.of(context).size.width * 0.20,
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(249, 1, 131, 0.65),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey
-                                      .withOpacity(0.50), // Warna bayangan
-                                  spreadRadius:
-                                      0, // Seberapa jauh bayangan menyebar
-                                  blurRadius: 4, // Seberapa kabur bayangan
-                                  offset: const Offset(
-                                      4, 4), // Posisi bayangan (x, y)
-                                ),
-                              ],
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              child: const PesanPage(),
+                              type: PageTransitionType.rightToLeft,
                             ),
-                            child: Image.asset(
-                              "assets/icon/gasWhite_icon.png",
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.width * 0.20,
+                              width: MediaQuery.of(context).size.width * 0.20,
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(249, 1, 131, 0.65),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey
+                                        .withOpacity(0.50), // Warna bayangan
+                                    spreadRadius:
+                                        0, // Seberapa jauh bayangan menyebar
+                                    blurRadius: 4, // Seberapa kabur bayangan
+                                    offset: const Offset(
+                                        4, 4), // Posisi bayangan (x, y)
+                                  ),
+                                ],
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                              ),
+                              child: Image.asset(
+                                "assets/icon/gasWhite_icon.png",
+                              ),
                             ),
-                          ),
-                          const Text(
-                            'Pesan Gas',
-                            style: TextStyle(
-                                height: 2,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 11,
-                                fontFamily: 'Poppins',
-                                color: Colors.black),
-                          )
-                        ],
+                            const Text(
+                              'Pesan Gas',
+                              style: TextStyle(
+                                  height: 2,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black),
+                            )
+                          ],
+                        ),
                       ),
                       Column(
                         children: [
@@ -270,7 +277,7 @@ class _MyHomePageState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: const Text(
                       'Tagihan Anda',
                       style: TextStyle(
@@ -282,14 +289,15 @@ class _MyHomePageState extends State<Home> {
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
-                      child: SingleChildScrollView(
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          children: Data.map((index) {
-                            return Container(
+                      child: Column(
+                        children: Data.map((index) {
+                          return Expanded(
+                            child: Container(
                               margin: const EdgeInsets.symmetric(vertical: 5),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -305,51 +313,63 @@ class _MyHomePageState extends State<Home> {
                                       Text(
                                         '${(index['batas_pembayaran'])}',
                                         style: const TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: 'Poppins-bold',
-                                            color: Colors.black),
+                                          fontSize: 18,
+                                          fontFamily: 'Poppins-bold',
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                      horizontal: 15,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 250, 48, 48),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(10)),
-                                    ),
-                                    child: Text(
-                                      '${(index['status_pembayaran'])}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
+                                  Expanded(
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 15,
+                                        horizontal: 15,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      decoration: const BoxDecoration(
+                                        color: Color.fromARGB(87, 255, 1, 1),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      child: Text(
+                                        '${(index['status_pembayaran'])}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: 'Poppins-bold',
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  const Text(
-                                    'Total Tagihan',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'Poppins',
-                                        color: Colors.black),
-                                  ),
-                                  Text(
-                                    'Rp${(index['total_pembayaran']).toString()},-',
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Poppins-bold',
-                                      color: Color.fromRGBO(249, 1, 131, 1.0),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(vertical: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Total Tagihan',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'Poppins',
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          'Rp${(index['total_pembayaran']).toString()},-',
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: 'Poppins-bold',
+                                            color: Color.fromRGBO(
+                                                249, 1, 131, 1.0),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 40),
+                                  SizedBox(
                                     child: FadeAnimation(
                                       1.0,
                                       Container(
@@ -396,9 +416,9 @@ class _MyHomePageState extends State<Home> {
                                   )
                                 ],
                               ),
-                            );
-                          }).toList(),
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ),
