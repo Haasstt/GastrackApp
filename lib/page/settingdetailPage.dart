@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, camel_case_types
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, camel_case_types, file_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +6,6 @@ import 'package:sp_util/sp_util.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gastrack/controller/updatedatauserController.dart';
 import 'package:gastrack/provider/UserProvider.dart';
-
 
 class Changename extends StatefulWidget {
   const Changename({super.key});
@@ -68,7 +67,7 @@ class _MyHomePageState_Changename extends State<Changename> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Masukkan username baru Anda';
-                            } 
+                            }
                             return null;
                           },
                           onChanged: (_) {
@@ -111,7 +110,7 @@ class _MyHomePageState_Changename extends State<Changename> {
                       ),
                       onPressed: _isButtonEnabled
                           ? () {
-                        _controller.ChangeName();
+                              _controller.ChangeName();
                             }
                           : null,
                       child: const Text(

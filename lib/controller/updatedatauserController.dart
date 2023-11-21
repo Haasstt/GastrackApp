@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, file_names
+// ignore_for_file: non_constant_identifier_names, depend_on_referenced_packages, file_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -1,7 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/controller/Authcontroller.dart';

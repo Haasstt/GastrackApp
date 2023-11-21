@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_element, use_build_context_synchronously
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_element, use_build_context_synchronously, file_names
 
 import 'dart:async';
 import 'dart:io';
@@ -201,7 +201,7 @@ class _MyStatefulWidgetState extends State<BayarTagihanPage> {
                                         ),
                                       ),
                                     ),
-                                  ), 
+                                  ),
                                 ),
                               ],
                             ),
@@ -514,15 +514,13 @@ class _MyStatefulWidgetState extends State<BayarTagihanPage> {
                                             getFilePicker();
                                             Navigator.of(context).pop();
                                           },
-                                          child:
-                                              photoprofile == null
-                                                  ? const Text("Pilih Foto")
-                                                  : const Text(
-                                                      "Pilih Foto Lainnya"),
+                                          child: photoprofile == null
+                                              ? const Text("Pilih Foto")
+                                              : const Text(
+                                                  "Pilih Foto Lainnya"),
                                         ),
                                         ElevatedButton(
-                                          onPressed: () {
-                                          },
+                                          onPressed: () {},
                                           child: const Text("Unggah foto"),
                                         ),
                                       ],
