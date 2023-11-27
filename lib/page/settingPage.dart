@@ -286,7 +286,7 @@ class _MyHomePageState extends State<Profilsaya> {
                                             width: 10,
                                           ),
                                           Text(
-                                            'No. Telp',
+                                            'Telpon',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16,
@@ -379,7 +379,58 @@ class _MyHomePageState extends State<Profilsaya> {
                                             width: 10,
                                           ),
                                           Text(
-                                            'Ubah Password',
+                                            'Password',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 16,
+                                                fontFamily: 'Poppins',
+                                                color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      Image.asset(
+                                        "assets/icon/navigate_icon.png",
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            FadeAnimation(
+                              0.7,
+                              Container(
+                                width: double.infinity,
+                                height: 40,
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        PageTransition(
+                                          child: const ChangeAlamat(),
+                                          type: PageTransitionType.rightToLeft,
+                                        ));
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Row(
+                                        children: [
+                                          Icon(Icons.place_rounded,
+                                              size: 20, color: Colors.black),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Alamat',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 16,
@@ -419,58 +470,6 @@ class _MyHomePageState extends State<Profilsaya> {
                                           color: Colors.black),
                                     ),
                                   ],
-                                ),
-                              ),
-                            ),
-                            FadeAnimation(
-                              0.8,
-                              Container(
-                                width: double.infinity,
-                                height: 40,
-                                decoration: const BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        child: const NotFoundPage(),
-                                        type: PageTransitionType.rightToLeft,
-                                      ),
-                                    );
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const Row(
-                                        children: [
-                                          Icon(Icons.help_outline_outlined,
-                                              size: 20, color: Colors.black),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            'Pusat Bantuan',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 16,
-                                                fontFamily: 'Poppins',
-                                                color: Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                      Image.asset(
-                                        "assets/icon/navigate_icon.png",
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ),
                             ),

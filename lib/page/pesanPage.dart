@@ -26,83 +26,77 @@ class _MyHomePageState extends State<PesanPage> {
           Padding(
             padding: const EdgeInsets.only(top: 130),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: FadeAnimation(
-                      0.5,
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            FadeAnimation(
-                              0.5,
-                              Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                width: double.infinity,
-                                height: 60,
-                                decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                child: const Row(
-                                  children: [
-                                    Text(
-                                      'Form Pembelian Gas',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontFamily: 'Poppins-ExtraBold',
-                                        color: Color.fromRGBO(249, 1, 131, 1.0),
-                                      ),
+                  FadeAnimation(
+                    0.5,
+                    SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          FadeAnimation(
+                            0.5,
+                            Container(
+                              width: double.infinity,
+                              height: 60,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Text(
+                                    'Form Pembelian Gas',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'Poppins-ExtraBold',
+                                      color: Color.fromRGBO(249, 1, 131, 1.0),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                            FadeAnimation(
-                              0.6, Form(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                  child: TextFormField(
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      suffixIcon: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 20),
-                                          child: Text(
-                                            '/ bar',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                            ),
-                                          )),
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(40)),
-                                      ),
-                                      labelText: "Masukkan jumlah pesanan gas",
-                                      filled: true,
-                                      fillColor: Colors.white,
+                          ),
+                          FadeAnimation(
+                            0.6,
+                            Form(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                    suffixIcon: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 20),
+                                        child: Text(
+                                          '/ bar',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                          ),
+                                        )),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(40)),
                                     ),
-                                    style: const TextStyle(
-                                      fontFamily: 'Poppins',
-                                    ),
+                                    labelText: "Masukkan jumlah pesanan gas",
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
                                   ),
                                 ),
                               ),
                             ),
+                          ),
                           BounceAnimation(
-                            0.7, Container(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 20
-                              ),
-                              width: 200,
+                            0.7,
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 20),
+                              width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
                                 style: TextButton.styleFrom(
@@ -116,7 +110,7 @@ class _MyHomePageState extends State<PesanPage> {
                                   FocusManager.instance.primaryFocus?.unfocus();
                                 },
                                 child: const Text(
-                                  "Pesan sekarang",
+                                  "Pesan Sekarang",
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 15,
@@ -126,8 +120,7 @@ class _MyHomePageState extends State<PesanPage> {
                               ),
                             ),
                           ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
                   ),

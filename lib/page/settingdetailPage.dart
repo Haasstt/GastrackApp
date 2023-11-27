@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gastrack/animation/BounceAnimation.dart';
+import 'package:gastrack/page/addAlamatPage.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gastrack/controller/updatedatauserController.dart';
@@ -822,5 +825,250 @@ class _MyHomePageState_Changepassword extends State<Changepassword> {
   bool isPasswordValid(String password) {
     final RegExp passwordRegExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$');
     return passwordRegExp.hasMatch(password);
+  }
+}
+
+class ChangeAlamat extends StatefulWidget {
+  const ChangeAlamat({super.key});
+
+  @override
+  State<ChangeAlamat> createState() => _MyHomePageState_ChangeAlamat();
+}
+
+class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
+  List<Map<String, dynamic>> Data = [
+    {
+      "id_pelanggan": 1,
+      "nama": "PT. Selep Nglames",
+      "email": "agen1@example.com",
+      "alamat":
+          "Jl. Merdeka No. 123, Kelurahan Bahagia, Kecamatan Sentosa, Kota Fiktif A",
+      "koordinat": "-7.657186, 111.530106",
+      // "koordinat": null,
+      "no_hp": "088111222",
+      "jenis_pembayaran": null,
+      "status": "aktif",
+      "created_at": "2023-11-27T15:18:49.000000Z",
+      "updated_at": "2023-11-27T15:18:49.000000Z"
+    }
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        title: const Text(
+          "Alamat Anda",
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
+        ),
+      ),
+      body: Container(
+        height: MediaQuery.sizeOf(context).height,
+        width: MediaQuery.sizeOf(context).width,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 15,
+                  ),
+                  width: MediaQuery.sizeOf(context).width,
+                  decoration: BoxDecoration(
+                        color: Color.fromARGB(36, 249, 1, 129),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromRGBO(249, 1, 131, 1.0),
+                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: Data.map((index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${(index['nama'])}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Poppins-bold',
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            '${(index['no_hp'])}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            '${(index['alamat'])}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                            ),
+                          ),
+                          index['koordinat'] == null
+                              ? Belum_pinpoint()
+                              : Sudah_pinpoint(),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Column Sudah_pinpoint() {
+    return Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  children: [
+                    Icon(Icons.place_outlined,
+                        size: 20, color: Color.fromARGB(255, 39, 193, 0)),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Sudah Pinpoint',
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                          fontFamily: 'Poppins-bold',
+                          color: Color.fromARGB(255, 39, 193, 0)),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.check_circle,
+                  size: 20, color: Color.fromARGB(255, 39, 193, 0)),
+            ],
+          ),
+          
+           BounceAnimation(
+              0.1,
+              Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black26)),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: const RoundedRectangleBorder(),
+                  ),
+                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        child: const MapsAlamat(),
+                                        type: PageTransitionType.rightToLeft,
+                                      ),
+                                    );},
+                  child: const Text(
+                        "Ubah Alamat",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                ),
+              ),
+            
+          )
+        ],
+      
+    );
+  }
+
+  Column Belum_pinpoint() {
+    return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.place_outlined,
+                        size: 20, color: Color.fromARGB(255, 251, 5, 5)),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Belum Pinpoint',
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14,
+                          fontFamily: 'Poppins-bold',
+                          color: Color.fromARGB(255, 251, 5, 5)),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 1,
+                    vertical: 1,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 251, 5, 5),
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  child: Icon(Icons.close_rounded,
+                      size: 15, color: Color.fromARGB(255, 255, 255, 255)),
+                ),
+              ],
+            ),
+          ),
+           BounceAnimation(
+              0.1,
+              Container(
+                width: double.infinity,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black26)),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    shape: const RoundedRectangleBorder(),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                        "Atur Pinpoint",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ),
+                ),
+              ),
+            
+          )
+        ],
+      
+    );
   }
 }
