@@ -1,5 +1,6 @@
-// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, camel_case_types, file_names
+// ignore_for_file: depend_on_referenced_packages, non_constant_identifier_names, camel_case_types, file_names, prefer_typing_uninitialized_variables
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
@@ -114,6 +115,132 @@ class _MyHomePageState_Changename extends State<Changename> {
                       onPressed: _isButtonEnabled
                           ? () {
                               _controller.ChangeName();
+                            }
+                          : null,
+                      child: const Text(
+                        "Update",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                          color: Color.fromARGB(255, 255, 255, 255),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Changeperusahaan extends StatefulWidget {
+  const Changeperusahaan({super.key});
+
+  @override
+  State<Changeperusahaan> createState() => _MyHomePageState_Changeperusahaan();
+}
+
+class _MyHomePageState_Changeperusahaan extends State<Changeperusahaan> {
+  final UpdateDataUserController _controller = UpdateDataUserController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isButtonEnabled = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        title: const Text(
+          "Ubah Nama Perusahaan",
+          style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
+        ),
+      ),
+      body: SizedBox(
+        height: MediaQuery.sizeOf(context).height,
+        width: double.infinity,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: TextFormField(
+                          controller: _controller.txtPerusahaan,
+                          style: const TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 12,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: 'Ubah perusahaan baru',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 10),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Color.fromRGBO(249, 1, 131, 1.0),
+                            )),
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Masukkan nama perusahaan baru Anda';
+                            }
+                            return null;
+                          },
+                          onChanged: (_) {
+                            setState(() {
+                              _isButtonEnabled =
+                                  _formKey.currentState!.validate();
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: _isButtonEnabled
+                          ? const Color.fromRGBO(249, 1, 131, 1.0)
+                          : const Color.fromARGB(255, 223, 223, 223),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _isButtonEnabled
+                              ? const Color.fromARGB(255, 122, 122, 122)
+                                  .withOpacity(0.55)
+                              : const Color.fromARGB(255, 122, 122, 122)
+                                  .withOpacity(0),
+                          spreadRadius: 0, // Seberapa jauh bayangan menyebar
+                          blurRadius: 5, // Seberapa kabur bayangan
+                          offset: const Offset(0, 4), // Posisi bayangan (x, y)
+                        ),
+                      ],
+                    ),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        shape: const RoundedRectangleBorder(),
+                      ),
+                      onPressed: _isButtonEnabled
+                          ? () {
+                              _controller.ChangePerusahaan();
                             }
                           : null,
                       child: const Text(
@@ -836,22 +963,52 @@ class ChangeAlamat extends StatefulWidget {
 }
 
 class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
-  List<Map<String, dynamic>> Data = [
-    {
-      "id_pelanggan": 1,
-      "nama": "PT. Selep Nglames",
-      "email": "agen1@example.com",
-      "alamat":
-          "Jl. Merdeka No. 123, Kelurahan Bahagia, Kecamatan Sentosa, Kota Fiktif A",
-      "koordinat": "-7.657186, 111.530106",
-      // "koordinat": null,
-      "no_hp": "088111222",
-      "jenis_pembayaran": null,
-      "status": "aktif",
-      "created_at": "2023-11-27T15:18:49.000000Z",
-      "updated_at": "2023-11-27T15:18:49.000000Z"
-    }
-  ];
+  List<Map<String, dynamic>> Data = [];
+  bool gagalmemuat = false;
+  var message;
+
+  void GetData() {
+    setState(() {
+      gagalmemuat = false;
+    });
+    UserProvider().getDetailuser(SpUtil.getInt('id')).then((value) {
+      if (value.statusCode == 200) {
+        var data = value.body['datauser'];
+        setState(() {
+          Data.clear();
+          Data.addAll([data]);
+        });
+        print(Data);
+        EasyLoading.dismiss();
+      } else if (value.hasError == true) {
+        var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
+        setState(() {
+          message = pesan;
+          gagalmemuat = !gagalmemuat;
+        });
+        Flushbar(
+          backgroundColor: Colors.red,
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.all(10),
+          borderRadius: BorderRadius.circular(8),
+          message: message,
+          icon: const Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: const Duration(seconds: 3),
+        ).show(context);
+        EasyLoading.dismiss();
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    GetData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -871,64 +1028,99 @@ class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
         height: MediaQuery.sizeOf(context).height,
         width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 15,
+        child: Data.isEmpty
+            ? Column(children: [
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1,
+                    color: const Color.fromRGBO(249, 1, 131, 1.0),
                   ),
-                  width: MediaQuery.sizeOf(context).width,
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(36, 249, 1, 129),
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: 1,
-                        color: const Color.fromRGBO(249, 1, 131, 1.0),
+                ),
+              ])
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 15,
+                        ),
+                        width: MediaQuery.sizeOf(context).width,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(36, 249, 1, 129),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(
+                              width: 1,
+                              color: const Color.fromRGBO(249, 1, 131, 1.0),
+                            )),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: Data.map((index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Perusahaan ',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${(index['nama_pemilik'])}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Poppins-bold',
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '${(index['nama_perusahaan'])}',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Poppins-bold',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                index['koordinat'] == null
+                                    ? const Text(
+                                        '',
+                                      )
+                                    : Text(
+                                        '${(index['koordinat'])}',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.black26,
+                                        ),
+                                      ),
+                                Text(
+                                  '${(index['alamat'])}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                index['koordinat'] == null
+                                    ? Belum_pinpoint()
+                                    : Sudah_pinpoint(),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       )),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: Data.map((index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${(index['nama'])}',
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Poppins-bold',
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            '${(index['no_hp'])}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            '${(index['alamat'])}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'Poppins',
-                              color: Colors.black,
-                            ),
-                          ),
-                          index['koordinat'] == null
-                              ? Belum_pinpoint()
-                              : Sudah_pinpoint(),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                )),
-          ],
-        ),
+                ],
+              ),
       ),
     );
   }

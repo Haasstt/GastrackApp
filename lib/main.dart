@@ -44,7 +44,7 @@ class _MyApp extends State<MyApp> {
       Navigator.pushReplacement(
         context,
         PageTransition(
-          child: (SpUtil.getBool('agen', defValue: false)!
+          child: (SpUtil.getBool('pelanggan', defValue: false)!
               ? const Home()
               : const Coverpage()),
           type: PageTransitionType.fade,

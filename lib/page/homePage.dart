@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_final_fields, non_constant_identifier_names, file_names
+// ignore_for_file: prefer_final_fields, non_constant_identifier_names, file_names, depend_on_referenced_packages, prefer_typing_uninitialized_variables
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
@@ -7,8 +8,11 @@ import 'package:gastrack/page/bayarPage.dart';
 import 'package:gastrack/page/pesanPage.dart';
 import 'package:gastrack/page/riwayattransaksiPage.dart';
 import 'package:gastrack/page/settingPage.dart';
+import 'package:gastrack/provider/TransaksiProvider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sp_util/sp_util.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,50 +23,54 @@ class Home extends StatefulWidget {
 
 class _MyHomePageState extends State<Home> {
   List<Map<String, dynamic>> Data = [];
+  bool gagalmemuat = false;
+  var message;
 
   void GetData() {
+    // setState(() {
+    // Data.clear();
+    // Data.addAll([
+    //   {
+    //     'batas_pembayaran': "12-12-2023",
+    //     'total_pembayaran': "200.000,-",
+    //     'status_pembayaran': "Belum bayar"
+    //   },
+    // ]);
+    // });
     setState(() {
-      Data.clear();
-      Data.addAll([
-        {
-          'batas_pembayaran': "12-12-2023",
-          'total_pembayaran': "200.000,-",
-          'status_pembayaran': "Belum bayar"
-        },
-      ]);
+      gagalmemuat = false;
     });
-    //   setState(() {
-    //     gagalmemuat = false;
-    //   });
-    //   UserProvider().getDatauser(SpUtil.getInt('id')).then((value) {
-    //     if (value.statusCode == 200) {
-    //       var data = value.body['datauser'];
-    //       setState(() {
-    //         Datauser.add(data);
-    //       });
-    //       EasyLoading.dismiss();
-    //     } else if (value.hasError == true) {
-    //       var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
-    //       setState(() {
-    //         message = pesan;
-    //         gagalmemuat = !gagalmemuat;
-    //       });
-    //       Flushbar(
-    //         backgroundColor: Colors.red,
-    //         flushbarPosition: FlushbarPosition.TOP,
-    //         margin: const EdgeInsets.all(10),
-    //         borderRadius: BorderRadius.circular(8),
-    //         message: message,
-    //         icon: const Icon(
-    //           Icons.info_outline,
-    //           size: 28.0,
-    //           color: Colors.white,
-    //         ),
-    //         duration: const Duration(seconds: 3),
-    //       ).show(context);
-    //       EasyLoading.dismiss();
-    //     }
-    //   });
+    TransaksiProvider().getTagihanUser(SpUtil.getInt('id')).then((value) {
+      if (value.statusCode == 200) {
+        var data = value.body['data'];
+        setState(() {
+          Data.clear();
+          Data.addAll([data]);
+        });
+        // print(data);
+        EasyLoading.dismiss();
+      } else if (value.hasError == true) {
+        var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
+        setState(() {
+          message = pesan;
+          gagalmemuat = !gagalmemuat;
+        });
+        Flushbar(
+          backgroundColor: Colors.red,
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.all(10),
+          borderRadius: BorderRadius.circular(8),
+          message: message,
+          icon: const Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: const Duration(seconds: 3),
+        ).show(context);
+        EasyLoading.dismiss();
+      }
+    });
   }
 
   Future<void> _refreshData() async {
@@ -79,6 +87,7 @@ class _MyHomePageState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       body: LiquidPullToRefresh(
         onRefresh: _refreshData,
@@ -123,7 +132,7 @@ class _MyHomePageState extends State<Home> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Column(
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -135,7 +144,7 @@ class _MyHomePageState extends State<Home> {
                                           color: Colors.black),
                                     ),
                                     Text(
-                                      'Nurafiif Almas Azhari',
+                                      SpUtil.getString('nama_user')!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
@@ -408,17 +417,19 @@ class _MyHomePageState extends State<Home> {
                                           children: [
                                             Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text(
                                                   'Batas Pembayaran',
                                                   style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins-bold',
-                                                      color: Colors.black),
+                                                      fontSize: 14,
+                                                      fontFamily:
+                                                          'Poppins-bold',
+                                                      color: Colors.black38),
                                                 ),
                                                 Text(
-                                                  '${(index['batas_pembayaran'])}',
+                                                  '${(index['tanggal_jatuh_tempo'])}',
                                                   style: const TextStyle(
                                                     fontSize: 18,
                                                     fontFamily: 'Poppins-bold',
@@ -430,22 +441,26 @@ class _MyHomePageState extends State<Home> {
                                             Expanded(
                                               child: Container(
                                                 width: double.infinity,
-                                                padding: const EdgeInsets.symmetric(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                   horizontal: 15,
                                                 ),
-                                                margin: const EdgeInsets.symmetric(
-                                                    vertical: 20),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 20),
                                                 decoration: const BoxDecoration(
                                                   color: Color.fromRGBO(
                                                       248, 215, 218, 1.0),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
                                                 ),
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     Text(
-                                                      '${(index['status_pembayaran'])}',
+                                                      '${(index['status_tagihan'])}',
                                                       style: const TextStyle(
                                                         color: Color.fromRGBO(
                                                             132, 32, 41, 1.0),
@@ -458,28 +473,32 @@ class _MyHomePageState extends State<Home> {
                                               ),
                                             ),
                                             Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  margin: const EdgeInsets.symmetric(
-                                                      vertical: 10),
+                                                  margin: const EdgeInsets
+                                                      .symmetric(vertical: 10),
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       const Text(
                                                         'Total Tagihan',
                                                         style: TextStyle(
                                                             fontSize: 12,
-                                                            fontFamily: 'Poppins',
-                                                            color: Colors.black),
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            color:
+                                                                Colors.black),
                                                       ),
                                                       Text(
-                                                        'Rp${(index['total_pembayaran'])}',
+                                                        'Rp${(index['jumlah_tagihan'])},-',
                                                         style: const TextStyle(
                                                           fontSize: 20,
-                                                          fontFamily: 'Poppins-bold',
+                                                          fontFamily:
+                                                              'Poppins-bold',
                                                           color: Color.fromRGBO(
                                                               249, 1, 131, 1.0),
                                                         ),
@@ -487,60 +506,70 @@ class _MyHomePageState extends State<Home> {
                                                     ],
                                                   ),
                                                 ),
-                                            BounceAnimation(
-                                              0.9,
-                                              Container(
-                                                width: double.infinity,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey.withOpacity(
-                                                          0.50), // Warna bayangan
-                                                      spreadRadius:
-                                                          0, // Seberapa jauh bayangan menyebar
-                                                      blurRadius:
-                                                          4, // Seberapa kabur bayangan
-                                                      offset: const Offset(4,
-                                                          4), // Posisi bayangan (x, y)
-                                                    ),
-                                                  ],
-                                                  color: const Color.fromRGBO(
-                                                      249, 1, 131, 1.0),
-                                                  borderRadius:
-                                                      const BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                ),
-                                                child: TextButton(
-                                                  style: TextButton.styleFrom(
-                                                    shape:
-                                                        const RoundedRectangleBorder(),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        child:
-                                                            const BayarTagihanPage(
-                                                          id: 1,
+                                                BounceAnimation(
+                                                  0.9,
+                                                  Container(
+                                                    width: double.infinity,
+                                                    height: 50,
+                                                    decoration: BoxDecoration(
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(
+                                                                  0.50), // Warna bayangan
+                                                          spreadRadius:
+                                                              0, // Seberapa jauh bayangan menyebar
+                                                          blurRadius:
+                                                              4, // Seberapa kabur bayangan
+                                                          offset: const Offset(
+                                                              4,
+                                                              4), // Posisi bayangan (x, y)
                                                         ),
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
+                                                      ],
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              249, 1, 131, 1.0),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                    ),
+                                                    child: TextButton(
+                                                      style:
+                                                          TextButton.styleFrom(
+                                                        shape:
+                                                            const RoundedRectangleBorder(),
                                                       ),
-                                                    );
-                                                  },
-                                                  child: const Text(
-                                                    "Bayar Sekarang",
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 15,
-                                                      color: Color.fromARGB(
-                                                          255, 255, 255, 255),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          PageTransition(
+                                                            child:
+                                                                const BayarTagihanPage(
+                                                              id: 1,
+                                                            ),
+                                                            type:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: const Text(
+                                                        "Bayar Sekarang",
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontSize: 15,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
                                               ],
                                             ),
                                           ],
