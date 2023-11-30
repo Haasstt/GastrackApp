@@ -27,16 +27,16 @@ class _MyHomePageState extends State<Home> {
   var message;
 
   void GetData() {
-    // setState(() {
-    // Data.clear();
-    // Data.addAll([
-    //   {
-    //     'batas_pembayaran': "12-12-2023",
-    //     'total_pembayaran': "200.000,-",
-    //     'status_pembayaran': "Belum bayar"
-    //   },
-    // ]);
-    // });
+    setState(() {
+      Data.clear();
+      // Data.addAll([
+      //   {
+      //     'batas_pembayaran': "12-12-2023",
+      //     'total_pembayaran': "200.000,-",
+      //     'status_pembayaran': "Belum bayar"
+      //   },
+      // ]);
+    });
     setState(() {
       gagalmemuat = false;
     });
@@ -135,7 +135,7 @@ class _MyHomePageState extends State<Home> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Hallo!',
                                       style: TextStyle(
                                           fontWeight: FontWeight.normal,
@@ -145,7 +145,7 @@ class _MyHomePageState extends State<Home> {
                                     ),
                                     Text(
                                       SpUtil.getString('nama_user')!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
                                           fontFamily: 'Poppins',
@@ -379,7 +379,7 @@ class _MyHomePageState extends State<Home> {
                               color: Colors.grey
                                   .withOpacity(0.25), // Warna bayangan
                               spreadRadius:
-                                  0, // Seberapa jauh bayangan menyebar
+                                  2, // Seberapa jauh bayangan menyebar
                               blurRadius: 4, // Seberapa kabur bayangan
                               offset:
                                   const Offset(1, 1), // Posisi bayangan (x, y)
@@ -403,181 +403,37 @@ class _MyHomePageState extends State<Home> {
                               child: Container(
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 10),
-                                child: Column(
-                                  children: Data.map((index) {
-                                    return Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Text(
-                                                  'Batas Pembayaran',
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily:
-                                                          'Poppins-bold',
-                                                      color: Colors.black38),
-                                                ),
-                                                Text(
-                                                  '${(index['tanggal_jatuh_tempo'])}',
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontFamily: 'Poppins-bold',
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Expanded(
+                                child: Data.isEmpty
+                                    ? Column(
+                                        children: [
+                                          Expanded(
                                               child: Container(
-                                                width: double.infinity,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 15,
-                                                ),
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 20),
-                                                decoration: const BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      248, 215, 218, 1.0),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10)),
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                            width: double.infinity,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Column(
                                                   children: [
+                                                    Image.asset(
+                                                      "assets/icon/noTagihan_icon.png",
+                                                    ),
                                                     Text(
-                                                      '${(index['status_tagihan'])}',
-                                                      style: const TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            132, 32, 41, 1.0),
-                                                        fontSize: 12,
-                                                        fontFamily: 'Poppins',
-                                                      ),
+                                                      'Anda tidak memiliki tagihan',
+                                                      style: TextStyle(
+                                                        height: 3,
+                                                          fontSize: 12,
+                                                          fontFamily: 'Poppins',
+                                                          color: Colors.black45),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(vertical: 10),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text(
-                                                        'Total Tagihan',
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontFamily:
-                                                                'Poppins',
-                                                            color:
-                                                                Colors.black),
-                                                      ),
-                                                      Text(
-                                                        'Rp${(index['jumlah_tagihan'])},-',
-                                                        style: const TextStyle(
-                                                          fontSize: 20,
-                                                          fontFamily:
-                                                              'Poppins-bold',
-                                                          color: Color.fromRGBO(
-                                                              249, 1, 131, 1.0),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                BounceAnimation(
-                                                  0.9,
-                                                  Container(
-                                                    width: double.infinity,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.grey
-                                                              .withOpacity(
-                                                                  0.50), // Warna bayangan
-                                                          spreadRadius:
-                                                              0, // Seberapa jauh bayangan menyebar
-                                                          blurRadius:
-                                                              4, // Seberapa kabur bayangan
-                                                          offset: const Offset(
-                                                              4,
-                                                              4), // Posisi bayangan (x, y)
-                                                        ),
-                                                      ],
-                                                      color:
-                                                          const Color.fromRGBO(
-                                                              249, 1, 131, 1.0),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius.circular(
-                                                                  10)),
-                                                    ),
-                                                    child: TextButton(
-                                                      style:
-                                                          TextButton.styleFrom(
-                                                        shape:
-                                                            const RoundedRectangleBorder(),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          PageTransition(
-                                                            child:
-                                                                const BayarTagihanPage(
-                                                              id: 1,
-                                                            ),
-                                                            type:
-                                                                PageTransitionType
-                                                                    .rightToLeft,
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: const Text(
-                                                        "Bayar Sekarang",
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          fontSize: 15,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
+                                          ))
+                                        ],
+                                      )
+                                    : Data_tagihan(Data: Data),
                               ),
                             ),
                           ],
@@ -591,6 +447,155 @@ class _MyHomePageState extends State<Home> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Data_tagihan extends StatelessWidget {
+  const Data_tagihan({
+    super.key,
+    required this.Data,
+  });
+
+  final List<Map<String, dynamic>> Data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: Data.map((index) {
+        return Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Batas Pembayaran',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins-bold',
+                          color: Colors.black38),
+                    ),
+                    Text(
+                      '${(index['tanggal_jatuh_tempo'])}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Poppins-bold',
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: const BoxDecoration(
+                      color: Color.fromRGBO(248, 215, 218, 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${(index['status_tagihan'])}',
+                          style: const TextStyle(
+                            color: Color.fromRGBO(132, 32, 41, 1.0),
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Total Tagihan',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: 'Poppins',
+                                color: Colors.black),
+                          ),
+                          Text(
+                            'Rp${(index['jumlah_tagihan'])},-',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Poppins-bold',
+                              color: Color.fromRGBO(249, 1, 131, 1.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    BounceAnimation(
+                      0.9,
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey
+                                  .withOpacity(0.50), // Warna bayangan
+                              spreadRadius:
+                                  0, // Seberapa jauh bayangan menyebar
+                              blurRadius: 4, // Seberapa kabur bayangan
+                              offset:
+                                  const Offset(4, 4), // Posisi bayangan (x, y)
+                            ),
+                          ],
+                          color: const Color.fromRGBO(249, 1, 131, 1.0),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: const RoundedRectangleBorder(),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                child: const BayarTagihanPage(
+                                  id: 1,
+                                ),
+                                type: PageTransitionType.rightToLeft,
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Bayar Sekarang",
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }

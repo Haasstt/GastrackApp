@@ -12,9 +12,6 @@ class LoginController extends GetxController {
   bool obscureText = true;
 
   void auth() {
-    // String emailPaten = "kurir@gmail.com";
-    // String password = "1";
-
     String email = txtEmail.text;
     String pass = txtPass.text;
 
@@ -26,23 +23,15 @@ class LoginController extends GetxController {
         colorText: Colors.white,
       );
     } else {
-      // if (email == emailPaten) {
-      //   // SpUtil.putString('name', nama);
-      //   SpUtil.putString('email', email);
-      //   SpUtil.putBool('pelanggan', true);
-      //   Get.offAllNamed('/home');
-      // }
       EasyLoading.show();
       var data = {
         "email": email,
         "password": pass,
       };
       LoginProvider().auth(data).then((value) {
-        print(value.bodyString);
         if (value.statusCode == 200) {
           var data = value.body['datauser'];
           var token = value.body['token'];
-          print(token);
           Get.snackbar(
             "Successs",
             "Login Berhasil",

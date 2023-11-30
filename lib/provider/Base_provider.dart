@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:sp_util/sp_util.dart';
 
 class BaseProvider extends GetConnect {
-  var host = "192.168.1.25:8000";
+  var host = "192.168.1.8:8000";
   var Url = "";
   var Urlupdatedatauser = "";
   var header = {
@@ -13,14 +13,6 @@ class BaseProvider extends GetConnect {
 
   BaseProvider() {
     Url = "http://$host/api/pelanggan";
+    Urlupdatedatauser = "http://$host/api/pelanggan/update";
   }
 }
-
-// Route::post('/pelanggan/login', [ApiPelangganController::class, 'login_action']);
-
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/pelanggan/logout', [ApiPelangganController::class, 'logout']);
-//     Route::put('/pelanggan/update/{id}', [ApiPelangganController::class, 'edit_action']);
-//     Route::get('/pelanggan/getupdate/{id}', [ApiPelangganController::class, 'edit_index']);
-//     Route::post('/pembelian/create', [ApiPembelianController::class, 'create_transaksi']);
-// }); 

@@ -19,6 +19,10 @@ class UserProvider extends BaseProvider {
     return put('$Urlupdatedatauser/name/$id', data, headers: header);
   }
 
+  Future<Response> updatePerusahaanuser(id, data) async {
+    return put('$Urlupdatedatauser/perusahaan/$id', data, headers: header);
+  }
+
   Future<Response> updateEmailuser(id, data) async {
     return put('$Urlupdatedatauser/email/$id', data, headers: header);
   }
