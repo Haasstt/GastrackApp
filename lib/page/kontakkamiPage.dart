@@ -1,7 +1,8 @@
-// ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names, avoid_print
+// ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names, avoid_print, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gastrack/animation/animations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class KontakKamiPage extends StatefulWidget {
   const KontakKamiPage({super.key});
@@ -11,6 +12,18 @@ class KontakKamiPage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<KontakKamiPage> {
+  String phoneNumber = "6281949683140";
+
+  Future<void> openWhatsApp() async {
+    final url = "https://wa.me/$phoneNumber";
+    try {
+      await launch(url);
+    } catch (e) {
+      // URL tidak dapat diakses, mungkin WhatsApp tidak terinstal
+      print("Could not launch $url");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -66,8 +79,8 @@ class _MyHomePageState extends State<KontakKamiPage> {
                       FadeAnimation(
                         0.5,
                         InkWell(
-                          onTap: () {
-                            print("object");
+                          onTap: () async {
+                            openWhatsApp();
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -77,7 +90,7 @@ class _MyHomePageState extends State<KontakKamiPage> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                    width: 0.5, color: Colors.black87)),
+                                    width: 1, color: Colors.black87)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -121,7 +134,7 @@ class _MyHomePageState extends State<KontakKamiPage> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                    width: 0.5, color: Colors.black87)),
+                                    width: 1, color: Colors.black87)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -164,7 +177,7 @@ class _MyHomePageState extends State<KontakKamiPage> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 border: Border.all(
-                                    width: 0.5, color: Colors.black87)),
+                                    width: 1, color: Colors.black87)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
