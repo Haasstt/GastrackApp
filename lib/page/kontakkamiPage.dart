@@ -13,8 +13,8 @@ class KontakKamiPage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<KontakKamiPage> {
-  String phoneNumber = "6281949683140";
-  String instagramUsername = "haasstt_"; 
+  String phoneNumber = "6281949684140";
+  String instagramUsername = "haasstt_";
   String emailAddress = "nurafiifalmasazhr@gmail.com";
   String subject = "Hallo Admin Gastrack!!!";
 
@@ -37,9 +37,9 @@ class _MyHomePageState extends State<KontakKamiPage> {
       print("Could not launch $url");
     }
   }
-   Future<void> sendEmail() async {
-    final url = Uri.encodeFull(
-        'mailto:$emailAddress?subject=$subject');
+
+  Future<void> sendEmail() async {
+    final url = Uri.encodeFull('mailto:$emailAddress?subject=$subject');
 
     try {
       await launch(url);
@@ -72,12 +72,13 @@ class _MyHomePageState extends State<KontakKamiPage> {
                 children: [
                   FadeAnimation(
                     0.5,
-                     Image.asset(
+                    Image.asset(
                       "assets/icon/kontakKami_icon.png",
                     ),
                   ),
                   FadeAnimation(
-                    0.6, Column(
+                    0.6,
+                    Column(
                       children: [
                         const Text(
                           'Hubungi Kami',
