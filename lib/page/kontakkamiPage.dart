@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names, avoid_print, deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,6 +14,9 @@ class KontakKamiPage extends StatefulWidget {
 
 class _MyHomePageState extends State<KontakKamiPage> {
   String phoneNumber = "6281949683140";
+  String instagramUsername = "haasstt_"; 
+  String emailAddress = "nurafiifalmasazhr@gmail.com";
+  String subject = "Hallo Admin Gastrack!!!";
 
   Future<void> openWhatsApp() async {
     final url = "https://wa.me/$phoneNumber";
@@ -21,6 +25,27 @@ class _MyHomePageState extends State<KontakKamiPage> {
     } catch (e) {
       // URL tidak dapat diakses, mungkin WhatsApp tidak terinstal
       print("Could not launch $url");
+    }
+  }
+
+  Future<void> openInstagram() async {
+    final url = "https://www.instagram.com/$instagramUsername";
+    try {
+      await launch(url);
+    } catch (e) {
+      // URL cannot be launched, Instagram might not be installed
+      print("Could not launch $url");
+    }
+  }
+   Future<void> sendEmail() async {
+    final url = Uri.encodeFull(
+        'mailto:$emailAddress?subject=$subject');
+
+    try {
+      await launch(url);
+    } catch (e) {
+      // URL cannot be launched, handle the error
+      print("Could not launch email");
     }
   }
 
@@ -45,39 +70,44 @@ class _MyHomePageState extends State<KontakKamiPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Image.asset(
-                    "assets/icon/kontakKami_icon.png",
+                  FadeAnimation(
+                    0.5,
+                     Image.asset(
+                      "assets/icon/kontakKami_icon.png",
+                    ),
                   ),
-                  Column(
-                    children: [
-                      const Text(
-                        'Hubungi Kami',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 20,
-                          fontFamily: 'Poppins-bold',
-                          color: Color.fromRGBO(249, 1, 131, 1.0),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 15),
-                        child: const Text(
-                          'Anda dapat menghubungi kami kapan pun dan dimana pun melalui',
-                          textAlign: TextAlign.center,
+                  FadeAnimation(
+                    0.6, Column(
+                      children: [
+                        const Text(
+                          'Hubungi Kami',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                            fontFamily: 'Poppins',
-                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Poppins-bold',
+                            color: Color.fromRGBO(249, 1, 131, 1.0),
                           ),
                         ),
-                      ),
-                    ],
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 15),
+                          child: const Text(
+                            'Anda dapat menghubungi kami kapan pun dan dimana pun melalui',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              fontFamily: 'Poppins',
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
-                      FadeAnimation(
-                        0.5,
+                      BounceAnimation(
+                        0.6,
                         InkWell(
                           onTap: () async {
                             openWhatsApp();
@@ -119,11 +149,11 @@ class _MyHomePageState extends State<KontakKamiPage> {
                           ),
                         ),
                       ),
-                      FadeAnimation(
-                        0.6,
+                      BounceAnimation(
+                        0.7,
                         InkWell(
                           onTap: () {
-                            print("object");
+                            openInstagram();
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(vertical: 20),
@@ -163,11 +193,11 @@ class _MyHomePageState extends State<KontakKamiPage> {
                           ),
                         ),
                       ),
-                      FadeAnimation(
-                        0.7,
+                      BounceAnimation(
+                        0.8,
                         InkWell(
                           onTap: () {
-                            print("object");
+                            sendEmail();
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

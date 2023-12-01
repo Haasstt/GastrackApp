@@ -430,11 +430,7 @@ class _MyHomePageState_Changephone extends State<Changephone> {
       statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.light,
     ));
-    return Datauser.isEmpty
-        ? ChangeTelp(context)
-        : Datauser[0]['no_hp'] == null
-            ? AddTelp(context)
-            : ChangeTelp(context);
+    return ChangeTelp(context);
   }
 
   Scaffold ChangeTelp(BuildContext context) {
@@ -573,141 +569,6 @@ class _MyHomePageState_Changephone extends State<Changephone> {
     );
   }
 
-  Scaffold AddTelp(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        title: const Text(
-          "Tambahkan No. Telp",
-          style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
-        ),
-      ),
-      body: SizedBox(
-        height: MediaQuery.sizeOf(context).height,
-        width: double.infinity,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: TextFormField(
-                          controller: _controller.txtnotelp,
-                          keyboardType: TextInputType.phone,
-                          style: const TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 12,
-                          ),
-                          decoration: InputDecoration(
-                            prefixIcon: Container(
-                                color: const Color.fromRGBO(249, 1, 131, 1.0),
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                child: const Text(
-                                  "+62",
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
-                                )),
-                            labelText: '(tidak perlu menulis angka 0 pertama)',
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 10),
-                            enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                              color: Color.fromRGBO(249, 1, 131, 1.0),
-                            )),
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Masukkan nomor telepon Anda';
-                            } else if (value.length < 11) {
-                              return 'Nomor telepon minimal 11 digit';
-                            } else if (value.length > 14) {
-                              return 'Nomor telepon maksimal 14 digit';
-                            } else if (value.contains(' ')) {
-                              return 'Nomor telepon tidak menggunakan spasi';
-                            } else if (value.contains(RegExp(r'[a-z]')) ||
-                                value.contains(RegExp(r'[A-Z]')) ||
-                                value.contains(RegExp(r'[;\/,.*()=#+_-]'))) {
-                              return 'Nomor telepon hanya boleh menggunakan angka';
-                            }
-                            return null;
-                          },
-                          onChanged: (_) {
-                            setState(() {
-                              _isButtonEnabled =
-                                  _formKey.currentState!.validate();
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: _isButtonEnabled
-                          ? const Color.fromRGBO(249, 1, 131, 1.0)
-                          : const Color.fromARGB(255, 223, 223, 223),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: _isButtonEnabled
-                              ? const Color.fromARGB(255, 122, 122, 122)
-                                  .withOpacity(0.55)
-                              : const Color.fromARGB(255, 122, 122, 122)
-                                  .withOpacity(0),
-                          spreadRadius: 0, // Seberapa jauh bayangan menyebar
-                          blurRadius: 5, // Seberapa kabur bayangan
-                          offset: const Offset(0, 4), // Posisi bayangan (x, y)
-                        ),
-                      ],
-                    ),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        shape: const RoundedRectangleBorder(),
-                      ),
-                      onPressed: _isButtonEnabled
-                          ? () {
-                              _controller.ChangeTelp();
-                            }
-                          : null,
-                      child: const Text(
-                        "Tambahkan",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                          color: Color.fromARGB(255, 255, 255, 255),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class Changepassword extends StatefulWidget {
@@ -1031,10 +892,10 @@ class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
         child: Data.isEmpty
             ? Column(children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: CircularProgressIndicator(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: const CircularProgressIndicator(
                     strokeWidth: 1,
-                    color: const Color.fromRGBO(249, 1, 131, 1.0),
+                    color: Color.fromRGBO(249, 1, 131, 1.0),
                   ),
                 ),
               ])
@@ -1065,9 +926,9 @@ class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
                               children: [
                                 Row(
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Perusahaan ',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'Poppins',
                                         color: Colors.black,
