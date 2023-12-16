@@ -49,7 +49,27 @@ class _MyHomePageState extends State<Home> {
         });
         // print(data);
         EasyLoading.dismiss();
-      } else if (value.hasError == true) {
+      } else if (value.statusCode == 422) {
+        var pesan = value.body['message'];
+        setState(() {
+          message = pesan;
+          gagalmemuat = !gagalmemuat;
+        });
+        Flushbar(
+          backgroundColor: Colors.green,
+          flushbarPosition: FlushbarPosition.TOP,
+          margin: const EdgeInsets.all(10),
+          borderRadius: BorderRadius.circular(8),
+          message: message,
+          icon: const Icon(
+            Icons.check,
+            size: 28.0,
+            color: Colors.white,
+          ),
+          duration: const Duration(seconds: 3),
+        ).show(context);
+        EasyLoading.dismiss();
+      }else{
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
         setState(() {
           message = pesan;
@@ -69,7 +89,7 @@ class _MyHomePageState extends State<Home> {
           duration: const Duration(seconds: 3),
         ).show(context);
         EasyLoading.dismiss();
-      }
+        }
     });
   }
 
@@ -571,8 +591,8 @@ class Data_tagihan extends StatelessWidget {
                             Navigator.push(
                               context,
                               PageTransition(
-                                child: const BayarTagihanPage(
-                                  id: 1,
+                                child: BayarTagihanPage(
+                                  id: index['id_tagihan'],
                                 ),
                                 type: PageTransitionType.rightToLeft,
                               ),

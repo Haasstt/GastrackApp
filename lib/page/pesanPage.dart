@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
+import 'package:gastrack/controller/transaksiController.dart';
 
 class PesanPage extends StatefulWidget {
   const PesanPage({super.key});
@@ -12,6 +13,7 @@ class PesanPage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<PesanPage> {
+  final TransaksiController _controller = TransaksiController();
   @override
   void initState() {
     super.initState();
@@ -67,6 +69,8 @@ class _MyHomePageState extends State<PesanPage> {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 20),
                                 child: TextFormField(
+                                  controller: _controller.txtJumlahPesanan,
+                                  keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     suffixIcon: Padding(
                                         padding: EdgeInsets.symmetric(
@@ -108,6 +112,7 @@ class _MyHomePageState extends State<PesanPage> {
                                 ),
                                 onPressed: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
+                                  _controller.Addpesanan();
                                 },
                                 child: const Text(
                                   "Pesan Sekarang",

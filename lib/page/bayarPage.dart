@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gastrack/controller/transaksiController.dart';
 import 'package:get/get.dart';
 
 class BayarTagihanPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class BayarTagihanPage extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<BayarTagihanPage> {
-  PlatformFile? photoprofile;
+  final TransaksiController _controller = TransaksiController();
   late var id = widget.id.toInt();
 
   void getFilePicker() async {
@@ -32,7 +33,7 @@ class _MyStatefulWidgetState extends State<BayarTagihanPage> {
         controller.sink.add(bytes);
 
         setState(() {
-          photoprofile = PlatformFile(
+          _controller.photoprofile = PlatformFile(
             path: selectedFile.path,
             name: selectedFile.uri.pathSegments.last,
             readStream: controller.stream,
@@ -493,10 +494,10 @@ class _MyStatefulWidgetState extends State<BayarTagihanPage> {
                                         Radius.circular(30)),
                                     border: Border.all(
                                         width: 1, color: Colors.grey)),
-                                child: photoprofile == null
+                                child: _controller.photoprofile == null
                                     ? const Center(child: Text('Pilih Foto'))
                                     : Image.file(
-                                        File(photoprofile!.path!),
+                                        File(_controller.photoprofile!.path!),
                                         width: double.infinity,
                                       ),
                               ),
@@ -514,13 +515,15 @@ class _MyStatefulWidgetState extends State<BayarTagihanPage> {
                                             getFilePicker();
                                             Navigator.of(context).pop();
                                           },
-                                          child: photoprofile == null
+                                          child: _controller.photoprofile == null
                                               ? const Text("Pilih Foto")
                                               : const Text(
                                                   "Pilih Foto Lainnya"),
                                         ),
                                         ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            _controller.Pembayaran(id);
+                                          },
                                           child: const Text("Unggah foto"),
                                         ),
                                       ],
