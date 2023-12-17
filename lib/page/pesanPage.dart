@@ -7,7 +7,6 @@ import 'package:gastrack/animation/animations.dart';
 import 'package:gastrack/controller/transaksiController.dart';
 import 'package:gastrack/page/settingdetailPage.dart';
 import 'package:gastrack/provider/UserProvider.dart';
-import 'package:get/get.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sp_util/sp_util.dart';
 
