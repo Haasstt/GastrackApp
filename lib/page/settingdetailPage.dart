@@ -839,7 +839,6 @@ class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
           Data.clear();
           Data.addAll([data]);
         });
-        print(Data);
         EasyLoading.dismiss();
       } else if (value.hasError == true) {
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";

@@ -1,9 +1,15 @@
 // ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
 import 'package:gastrack/controller/transaksiController.dart';
+import 'package:gastrack/page/settingdetailPage.dart';
+import 'package:gastrack/provider/UserProvider.dart';
+import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:sp_util/sp_util.dart';
 
 class PesanPage extends StatefulWidget {
   const PesanPage({super.key});
@@ -14,6 +20,40 @@ class PesanPage extends StatefulWidget {
 
 class _MyHomePageState extends State<PesanPage> {
   final TransaksiController _controller = TransaksiController();
+
+  void GetData() {
+    UserProvider().getDetailuser(SpUtil.getInt('id')).then((value) {
+      if (value.statusCode == 200) {
+        var data = value.body['datauser']['koordinat'];
+
+        if (data == null) {
+          Navigator.push(
+              context,
+              PageTransition(
+                child: const ChangeAlamat(),
+                type: PageTransitionType.rightToLeft,
+              ));
+          Flushbar(
+            backgroundColor: Colors.red,
+            flushbarPosition: FlushbarPosition.TOP,
+            margin: const EdgeInsets.all(10),
+            borderRadius: BorderRadius.circular(8),
+            message:
+                "Mohon atur pinpoint dahulu untuk keakurasian terbaik lokasi Anda",
+            icon: const Icon(
+              Icons.info_outline,
+              size: 28.0,
+              color: Colors.white,
+            ),
+            duration: const Duration(seconds: 3),
+          ).show(context);
+        }else{
+          _controller.Addpesanan();
+        }
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +107,8 @@ class _MyHomePageState extends State<PesanPage> {
                             0.6,
                             Form(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
                                 child: TextFormField(
                                   controller: _controller.txtJumlahPesanan,
                                   keyboardType: TextInputType.number,
@@ -112,7 +153,8 @@ class _MyHomePageState extends State<PesanPage> {
                                 ),
                                 onPressed: () {
                                   FocusManager.instance.primaryFocus?.unfocus();
-                                  _controller.Addpesanan();
+                                  // _controller.Addpesanan();
+                                  GetData();
                                 },
                                 child: const Text(
                                   "Pesan Sekarang",

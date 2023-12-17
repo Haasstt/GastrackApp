@@ -24,36 +24,29 @@ class Home extends StatefulWidget {
 class _MyHomePageState extends State<Home> {
   List<Map<String, dynamic>> Data = [];
   bool gagalmemuat = false;
+  bool datakosong = false;
   var message;
 
   void GetData() {
     setState(() {
       Data.clear();
-      // Data.addAll([
-      //   {
-      //     'batas_pembayaran': "12-12-2023",
-      //     'total_pembayaran': "200.000,-",
-      //     'status_pembayaran': "Belum bayar"
-      //   },
-      // ]);
     });
     setState(() {
       gagalmemuat = false;
+      datakosong = false;
     });
     TransaksiProvider().getTagihanUser(SpUtil.getInt('id')).then((value) {
       if (value.statusCode == 200) {
         var data = value.body['data'];
         setState(() {
-          Data.clear();
           Data.addAll([data]);
         });
-        // print(data);
         EasyLoading.dismiss();
       } else if (value.statusCode == 422) {
         var pesan = value.body['message'];
         setState(() {
           message = pesan;
-          gagalmemuat = !gagalmemuat;
+          datakosong = !datakosong;
         });
         Flushbar(
           backgroundColor: Colors.green,
@@ -69,7 +62,7 @@ class _MyHomePageState extends State<Home> {
           duration: const Duration(seconds: 3),
         ).show(context);
         EasyLoading.dismiss();
-      }else{
+      } else {
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
         setState(() {
           message = pesan;
@@ -89,7 +82,7 @@ class _MyHomePageState extends State<Home> {
           duration: const Duration(seconds: 3),
         ).show(context);
         EasyLoading.dismiss();
-        }
+      }
     });
   }
 
@@ -427,7 +420,7 @@ class _MyHomePageState extends State<Home> {
                                     ? Column(
                                         children: [
                                           Expanded(
-                                              child: Container(
+                                              child: SizedBox(
                                             width: double.infinity,
                                             child: Column(
                                               mainAxisAlignment:
@@ -435,17 +428,65 @@ class _MyHomePageState extends State<Home> {
                                               children: [
                                                 Column(
                                                   children: [
-                                                    Image.asset(
-                                                      "assets/icon/noTagihan_icon.png",
-                                                    ),
-                                                    Text(
-                                                      'Anda tidak memiliki tagihan',
-                                                      style: TextStyle(
-                                                        height: 3,
-                                                          fontSize: 12,
-                                                          fontFamily: 'Poppins',
-                                                          color: Colors.black45),
-                                                    ),
+                                                    datakosong
+                                                        ? Column(
+                                                            children: [
+                                                              Image.asset(
+                                                                "assets/icon/noTagihan_icon.png",
+                                                              ),
+                                                              const Text(
+                                                                'Anda tidak memiliki tagihan',
+                                                                style: TextStyle(
+                                                                    height: 3,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontFamily:
+                                                                        'Poppins',
+                                                                    color: Colors
+                                                                        .black45),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        : gagalmemuat
+                                                            ? Column(
+                                                                children: [
+                                                                  Container(
+                                                                    margin: const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            5),
+                                                                    child: const Icon(
+                                                                      Icons
+                                                                          .cloud_off,
+                                                                      size: 50,
+                                                                      color: Colors
+                                                                          .black26,
+                                                                    ),
+                                                                  ),
+                                                                  const Text(
+                                                                    'Offline',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontFamily:
+                                                                          'Poppins',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            : const CircularProgressIndicator(
+                                                                strokeWidth: 1,
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                        249,
+                                                                        1,
+                                                                        131,
+                                                                        1.0),
+                                                              )
                                                   ],
                                                 ),
                                               ],
