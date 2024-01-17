@@ -144,7 +144,7 @@ class _MyHomePageState extends State<PesanPage> {
                       fontFamily: 'Poppins-bold',
                       color: Colors.red),
                 ),
-              ],
+              ], 
             ),
             content: const Text(
               'Anda harus menambahkan foto sisa bar gas Anda saat ini',
