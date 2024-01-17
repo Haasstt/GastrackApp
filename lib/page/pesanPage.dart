@@ -1,14 +1,19 @@
 // ignore_for_file: depend_on_referenced_packages, file_names, non_constant_identifier_names
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
 import 'package:gastrack/animation/animations.dart';
 import 'package:gastrack/controller/transaksiController.dart';
+import 'package:gastrack/loading.dart';
 import 'package:gastrack/page/settingdetailPage.dart';
 import 'package:gastrack/provider/UserProvider.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:file_picker/file_picker.dart';
 
 class PesanPage extends StatefulWidget {
   const PesanPage({super.key});
@@ -20,12 +25,202 @@ class PesanPage extends StatefulWidget {
 class _MyHomePageState extends State<PesanPage> {
   final TransaksiController _controller = TransaksiController();
 
-  void GetData() {
+  Future<void> _showConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // Dialog tidak bisa ditutup dengan mengetuk di luar dialog
+      builder: (BuildContext context) {
+        return BounceAnimation(
+          0.1,
+          AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Atur BorderRadius sesuai kebutuhan
+            ),
+            title: const Text(
+              'Konfirmasi',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Poppins-bold',
+                  color: Colors.black),
+            ),
+            content: const Text(
+              'Pastikan data pesanan yang Anda masukkan sudah benar, data tidak dapat diubah kembali setelah proses pemesanan. Tetap lanjut?',
+              style: TextStyle(
+                  fontSize: 12, fontFamily: 'Poppins', color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(249, 1, 131, 1.0),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Periksa Kembali',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        checkData();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor:
+                            const Color.fromRGBO(128, 38, 198, 1.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Lanjutkan',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showdatanotfoundConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible:
+          false, // Dialog tidak bisa ditutup dengan mengetuk di luar dialog
+      builder: (BuildContext context) {
+        return BounceAnimation(
+          0.1,
+          AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Atur BorderRadius sesuai kebutuhan
+            ),
+            title: const Row(
+              children: [
+                Icon(Icons.warning_rounded, color: Colors.red),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  'Data kosong!',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Poppins-bold',
+                      color: Colors.red),
+                ),
+              ],
+            ),
+            content: const Text(
+              'Anda harus menambahkan foto sisa bar gas Anda saat ini',
+              style: TextStyle(
+                  fontSize: 12, fontFamily: 'Poppins', color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(249, 1, 131, 1.0),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 5),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Oke, Mengerti',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void getFilePicker() async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      final selectedFile = File(result.files.first.path as String);
+
+      if (selectedFile.existsSync()) {
+        final bytes = await selectedFile.readAsBytes();
+        final controller = StreamController<List<int>>();
+        controller.sink.add(bytes);
+
+        setState(() {
+          _controller.photoprofile = PlatformFile(
+            path: selectedFile.path,
+            name: selectedFile.uri.pathSegments.last,
+            readStream: controller.stream,
+            size: bytes.length,
+            bytes: bytes,
+          );
+        });
+      }
+    }
+  }
+
+  void checkData() {
+    customLoading(context);
     UserProvider().getDetailuser(SpUtil.getInt('id')).then((value) {
       if (value.statusCode == 200) {
         var data = value.body['datauser']['koordinat'];
 
         if (data == null) {
+          Navigator.pop(context);
+          Navigator.pop(context);
           Navigator.push(
               context,
               PageTransition(
@@ -46,8 +241,8 @@ class _MyHomePageState extends State<PesanPage> {
             ),
             duration: const Duration(seconds: 3),
           ).show(context);
-        }else{
-          _controller.Addpesanan();
+        } else {
+          _controller.Addpesanan(context);
         }
       }
     });
@@ -61,7 +256,6 @@ class _MyHomePageState extends State<PesanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           Padding(
@@ -70,108 +264,7 @@ class _MyHomePageState extends State<PesanPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
               height: MediaQuery.of(context).size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FadeAnimation(
-                    0.5,
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          FadeAnimation(
-                            0.5,
-                            Container(
-                              width: double.infinity,
-                              height: 60,
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Text(
-                                    'Form Pembelian Gas',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontFamily: 'Poppins-ExtraBold',
-                                      color: Color.fromRGBO(249, 1, 131, 1.0),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          FadeAnimation(
-                            0.6,
-                            Form(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: TextFormField(
-                                  controller: _controller.txtJumlahPesanan,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    suffixIcon: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 20),
-                                        child: Text(
-                                          '/ bar',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                          ),
-                                        )),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(40)),
-                                    ),
-                                    labelText: "Masukkan jumlah pesanan gas",
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  style: const TextStyle(
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          BounceAnimation(
-                            0.7,
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 20),
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromRGBO(249, 1, 131, 1.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  FocusManager.instance.primaryFocus?.unfocus();
-                                  // _controller.Addpesanan();
-                                  GetData();
-                                },
-                                child: const Text(
-                                  "Pesan Sekarang",
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 15,
-                                    color: Color(0xffffffff),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              child: formPesan(context),
             ),
           ),
           Container(
@@ -226,6 +319,180 @@ class _MyHomePageState extends State<PesanPage> {
           ),
         ],
       ),
+    );
+  }
+
+  ListView formPesan(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      children: [
+        FadeAnimation(
+          0.5,
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: [
+                FadeAnimation(
+                  0.5,
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    width: double.infinity,
+                    child: const Row(
+                      children: [
+                        Text(
+                          'Form pemesanan gas',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Poppins-semibold',
+                            color: Color.fromRGBO(249, 1, 131, 1.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.30,
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                    border: Border.all(width: 1, color: Colors.black26),
+                  ),
+                  child: _controller.photoprofile == null
+                      ? InkWell(
+                          onTap: () {
+                            getFilePicker();
+                          },
+                          child: const SizedBox(
+                            width: double.infinity,
+                            child: Center(
+                              child: Text(
+                                'Unggah Bukti Pengisian',
+                                style: TextStyle(
+                                    color: Colors.black26,
+                                    fontFamily: 'Poppins'),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.symmetric(vertical: 20),
+                          child: Image.file(
+                            File(_controller.photoprofile!.path!),
+                            width: double.infinity,
+                          ),
+                        ),
+                ),
+                _controller.photoprofile != null
+                    ? ElevatedButton(
+                        onPressed: () {
+                          getFilePicker();
+                        },
+                        child: const Text(
+                          "Pilih Foto Lainnya",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
+                FadeAnimation(
+                  0.5,
+                  Container(
+                    margin: const EdgeInsets.only(top: 15),
+                    width: double.infinity,
+                    child: const Row(
+                      children: [
+                        Text(
+                          "Tambahkan keterangan",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                FadeAnimation(
+                  0.6,
+                  Form(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: TextFormField(
+                        maxLines: 5,
+                        controller: _controller.txtKeterangan,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors
+                                    .black26), // Warna border saat dalam fokus
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors
+                                    .black26), // Warna border saat dalam fokus
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors
+                                    .black26), // Warna border saat tidak dalam fokus
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        style: const TextStyle(
+                            fontFamily: 'Poppins', fontSize: 12),
+                      ),
+                    ),
+                  ),
+                ),
+                BounceAnimation(
+                  0.7,
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(249, 1, 131, 1.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_controller.photoprofile == null) {
+                          _showdatanotfoundConfirmationDialog(context);
+                        } else {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          _showConfirmationDialog(context);
+                        }
+                      },
+                      child: const Text(
+                        "Pesan sekarang",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                          color: Color(0xffffffff),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

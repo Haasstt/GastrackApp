@@ -374,8 +374,9 @@ class _MyHomePageState extends State<Coverpage> {
                                 ),
                               ),
                               onPressed: () {
+                                // Navigator.pop(context);
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                _loginController.auth();
+                                _loginController.auth(context);
                               },
                               child: const Text(
                                 "M A S U K",
@@ -390,32 +391,32 @@ class _MyHomePageState extends State<Coverpage> {
                           const SizedBox(
                             height: 40,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "Belum punya akun?",
-                                style: TextStyle(
-                                    color: Color.fromRGBO(47, 47, 47, 1.0),
-                                    fontFamily: 'Poppins',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, '/registrasi');
-                                },
-                                child: const Text(
-                                  "Klik disini",
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(128, 38, 198, 1.0),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     const Text(
+                          //       "Belum punya akun?",
+                          //       style: TextStyle(
+                          //           color: Color.fromRGBO(47, 47, 47, 1.0),
+                          //           fontFamily: 'Poppins',
+                          //           fontSize: 14,
+                          //           fontWeight: FontWeight.normal),
+                          //     ),
+                          //     TextButton(
+                          //       onPressed: () {
+                          //         Navigator.pushNamed(context, '/registrasi');
+                          //       },
+                          //       child: const Text(
+                          //         "Klik disini",
+                          //         style: TextStyle(
+                          //             color: Color.fromRGBO(128, 38, 198, 1.0),
+                          //             fontFamily: 'Poppins',
+                          //             fontSize: 14,
+                          //             fontWeight: FontWeight.normal),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                       const Positioned(

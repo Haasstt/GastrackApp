@@ -11,15 +11,46 @@ class TransaksiProvider extends BaseProvider {
   Future<Response> getTagihanUser(id) async {
     return get('$Url/tagihan/$id', headers: header);
   }
+
   Future<Response> getTransaksiUser(id) async {
     return get('$Url/transaksi/$id', headers: header);
   }
+
   Future<Response> getDetailTransaksiUser(id) async {
     return get('$Url/detailtransaksi/$id', headers: header);
   }
-  Future<Response> beliGas(var data) async {
-    return post('$Url/pembelian', data, headers: header);
+  
+  Future<http.Response> beliGas(PlatformFile file, String keterangan, id) async {
+  var request =
+      http.MultipartRequest('POST', Uri.parse('$Url/pembelian'));
+
+  // Pastikan Anda sudah menyertakan semua header yang diperlukan
+  header.forEach((key, value) {
+    request.headers[key] = value;
+  });
+
+  request.fields['id_pelanggan'] = id.toString();
+  request.fields['deskripsi_pesanan'] = keterangan;
+
+  // Tambahkan gambar ke request
+  request.files.add(http.MultipartFile(
+    'bukti_pesanan',
+    http.ByteStream.fromBytes(file.bytes as List<int>),
+    file.size, // Ukuran file
+    filename: file.name, // Nama file
+  ));
+
+  try {
+    var response = await request.send();
+    return http.Response.fromStream(response);
+  } catch (error) {
+    // Handle error
+    print('Error: $error');
+    return http.Response('Error', 500);
   }
+}
+
+
   Future<void> uploadImageToApi(PlatformFile file, id) async {
     var request =
         http.MultipartRequest('POST', Uri.parse('$Url/update_pembayaran/$id'));
@@ -30,9 +61,8 @@ class TransaksiProvider extends BaseProvider {
 
     // Tambahkan gambar ke request
     request.files.add(http.MultipartFile(
-      'bukti_pembayaran', 
-      http.ByteStream.fromBytes(
-          file.bytes as List<int>), 
+      'bukti_pembayaran',
+      http.ByteStream.fromBytes(file.bytes as List<int>),
       file.size, // Ukuran file
       filename: file.name, // Nama file
     ));
@@ -57,7 +87,7 @@ class TransaksiProvider extends BaseProvider {
           colorText: Colors.white,
           backgroundColor: Colors.red.withOpacity(0.50),
         );
-          print(response.request);
+        print(response.request);
         EasyLoading.dismiss();
       }
     } catch (e) {
@@ -69,5 +99,5 @@ class TransaksiProvider extends BaseProvider {
       );
       EasyLoading.dismiss();
     }
-  } 
+  }
 }

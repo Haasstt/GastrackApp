@@ -1,9 +1,9 @@
 // ignore_for_file: depend_on_referenced_packages, file_names
 
 import 'package:flutter/material.dart';
+import 'package:gastrack/loading.dart';
 import 'package:gastrack/provider/AuthProvider.dart';
 import 'package:get/get.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sp_util/sp_util.dart';
 
 class LoginController extends GetxController {
@@ -11,7 +11,7 @@ class LoginController extends GetxController {
   TextEditingController txtPass = TextEditingController();
   bool obscureText = true;
 
-  void auth() {
+  void auth(context) {
     String email = txtEmail.text;
     String pass = txtPass.text;
 
@@ -19,16 +19,17 @@ class LoginController extends GetxController {
       Get.snackbar(
         "Login Failed",
         "Please input field!",
-        backgroundColor: const Color.fromARGB(90, 255, 17, 0),
+        backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     } else {
-      EasyLoading.show();
+      customLoading(context);
       var data = {
         "email": email,
         "password": pass,
       };
       LoginProvider().auth(data).then((value) {
+        // Navigator.pop(context);
         if (value.statusCode == 200) {
           var data = value.body['datauser'];
           var token = value.body['token'];
@@ -45,27 +46,35 @@ class LoginController extends GetxController {
           SpUtil.putBool('pelanggan', true);
           Get.offAllNamed('/home');
         } else if (value.statusCode == 404) {
+          Navigator.pop(context);
           Get.snackbar(
             "Login gagal",
             value.body['message'],
             backgroundColor: Colors.red,
             colorText: Colors.white,
           );
-        }else if (value.statusCode == 422) {
+          txtEmail.clear();
+          txtPass.clear();
+        } else if (value.statusCode == 422) {
+          Navigator.pop(context);
           Get.snackbar(
             "Login gagal",
             value.body['message'],
             backgroundColor: Colors.red,
             colorText: Colors.white,
           );
+          txtEmail.clear();
+          txtPass.clear();
         } else if (value.hasError == true) {
+          Navigator.pop(context);
           Get.snackbar(
             "Server Not Responding",
             'Gagal menghubungka ke server',
             colorText: Colors.white,
           );
+          txtEmail.clear();
+          txtPass.clear();
         }
-        EasyLoading.dismiss();
       });
     }
   }
@@ -76,10 +85,10 @@ class LogoutController extends GetxController {
   TextEditingController txtPass = TextEditingController();
   bool obscureText = true;
 
-  void logout() {
+  void logout(context) {
     // SpUtil.clear();
     // Get.offAllNamed('/cover');
-    EasyLoading.show();
+    customLoading(context);
     var data = {
       "token": SpUtil.getString('token')!,
     };
@@ -88,7 +97,6 @@ class LogoutController extends GetxController {
         SpUtil.clear();
         Get.offAllNamed('/cover');
       }
-      EasyLoading.dismiss();
     });
   }
 }

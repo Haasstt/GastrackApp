@@ -131,7 +131,7 @@ class UpdateDataUserController extends GetxController {
     });
   }
 
-  void ChangeEmail() {
+  void ChangeEmail(context) {
     String email = txtEmail.text;
 
     // EasyLoading.show();
@@ -147,7 +147,7 @@ class UpdateDataUserController extends GetxController {
           backgroundColor: Colors.green.withOpacity(0.85),
           colorText: Colors.white,
         );
-        LogoutController().logout();
+        LogoutController().logout(context);
       } else if (value.hasError == true) {
         Get.snackbar(
           "Server Not Responding",

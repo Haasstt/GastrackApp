@@ -10,6 +10,7 @@ import 'package:gastrack/page/riwayattransaksiPage.dart';
 import 'package:gastrack/page/settingPage.dart';
 import 'package:gastrack/provider/TransaksiProvider.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sp_util/sp_util.dart';
@@ -455,7 +456,8 @@ class _MyHomePageState extends State<Home> {
                                                                         .symmetric(
                                                                         vertical:
                                                                             5),
-                                                                    child: const Icon(
+                                                                    child:
+                                                                        const Icon(
                                                                       Icons
                                                                           .cloud_off,
                                                                       size: 50,
@@ -478,15 +480,40 @@ class _MyHomePageState extends State<Home> {
                                                                   ),
                                                                 ],
                                                               )
-                                                            : const CircularProgressIndicator(
-                                                                strokeWidth: 1,
-                                                                color: Color
-                                                                    .fromRGBO(
-                                                                        249,
-                                                                        1,
-                                                                        131,
-                                                                        1.0),
-                                                              )
+                                                            : Stack(
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: 90,
+                                                                    width: 90,
+                                                                    child: Lottie.asset(
+                                                                        'assets/js/loadingPage.json',
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                                  ),
+                                                                  const Positioned(
+                                                                    top: 65,
+                                                                    child:
+                                                                        SizedBox(
+                                                                      width: 90,
+                                                                      child:
+                                                                          Text(
+                                                                        'Memuat',
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontFamily:
+                                                                              'Poppins',
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
                                                   ],
                                                 ),
                                               ],

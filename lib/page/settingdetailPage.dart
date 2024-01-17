@@ -4,8 +4,10 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gastrack/animation/BounceAnimation.dart';
+import 'package:gastrack/animation/animations.dart';
 import 'package:gastrack/page/addAlamatPage.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gastrack/controller/updatedatauserController.dart';
@@ -59,6 +61,10 @@ class _MyHomePageState_Changename extends State<Changename> {
                             fontSize: 12,
                           ),
                           decoration: const InputDecoration(
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             labelText: 'Ubah username baru',
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
@@ -185,6 +191,10 @@ class _MyHomePageState_Changeperusahaan extends State<Changeperusahaan> {
                             fontSize: 12,
                           ),
                           decoration: const InputDecoration(
+                            labelStyle: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             labelText: 'Ubah perusahaan baru',
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
@@ -312,6 +322,10 @@ class _MyHomePageState_Changeemail extends State<Changeemail> {
                             fontSize: 12,
                           ),
                           decoration: const InputDecoration(
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             labelText: 'Ubah email baru',
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
@@ -369,7 +383,7 @@ class _MyHomePageState_Changeemail extends State<Changeemail> {
                       ),
                       onPressed: _isButtonEnabled
                           ? () {
-                              _controller.ChangeEmail();
+                              _controller.ChangeEmail(context);
                             }
                           : null,
                       child: const Text(
@@ -469,6 +483,10 @@ class _MyHomePageState_Changephone extends State<Changephone> {
                             fontSize: 12,
                           ),
                           decoration: InputDecoration(
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             prefixIcon: Container(
                                 color: const Color.fromRGBO(249, 1, 131, 1.0),
                                 margin: const EdgeInsets.only(right: 10),
@@ -482,7 +500,6 @@ class _MyHomePageState_Changephone extends State<Changephone> {
                                     color: Colors.white,
                                   ),
                                 )),
-                            labelText: '(tidak perlu menulis angka 0 pertama)',
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
                             enabledBorder: const OutlineInputBorder(
@@ -568,7 +585,6 @@ class _MyHomePageState_Changephone extends State<Changephone> {
       ),
     );
   }
-
 }
 
 class Changepassword extends StatefulWidget {
@@ -649,6 +665,10 @@ class _MyHomePageState_Changepassword extends State<Changepassword> {
                               ),
                             ),
                             labelText: 'Password lama',
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
                             enabledBorder: const OutlineInputBorder(
@@ -690,6 +710,10 @@ class _MyHomePageState_Changepassword extends State<Changepassword> {
                               ),
                             ),
                             labelText: 'Password baru',
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
                             enabledBorder: const OutlineInputBorder(
@@ -734,6 +758,10 @@ class _MyHomePageState_Changepassword extends State<Changepassword> {
                               ),
                             ),
                             labelText: 'Konfirmasi password baru',
+                            labelStyle: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 12,
+                            ),
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 0, horizontal: 10),
                             enabledBorder: const OutlineInputBorder(
@@ -889,97 +917,173 @@ class _MyHomePageState_ChangeAlamat extends State<ChangeAlamat> {
         width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Data.isEmpty
-            ? Column(children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: const CircularProgressIndicator(
-                    strokeWidth: 1,
-                    color: Color.fromRGBO(249, 1, 131, 1.0),
-                  ),
-                ),
-              ])
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            ? Column(
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 15,
-                        ),
-                        width: MediaQuery.sizeOf(context).width,
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(36, 249, 1, 129),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                              width: 1,
-                              color: const Color.fromRGBO(249, 1, 131, 1.0),
-                            )),
+                  Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      margin: const EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 15,
+                      ),
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(34, 222, 222, 222),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            width: 1,
+                            color: Color.fromARGB(255, 169, 169, 169),
+                          )),
+                      child: Shimmer.fromColors(
+                        direction: ShimmerDirection.ltr,
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: Data.map((index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'Perusahaan ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'Poppins',
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${(index['nama_pemilik'])}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: 'Poppins-bold',
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  '${(index['nama_perusahaan'])}',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins-bold',
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                index['koordinat'] == null
-                                    ? const Text(
-                                        '',
-                                      )
-                                    : Text(
-                                        '${(index['koordinat'])}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'Poppins',
-                                          color: Colors.black26,
-                                        ),
-                                      ),
-                                Text(
-                                  '${(index['alamat'])}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                index['koordinat'] == null
-                                    ? Belum_pinpoint()
-                                    : Sudah_pinpoint(),
-                              ],
-                            );
-                          }).toList(),
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 5),
+                              height: 15,
+                              width: MediaQuery.sizeOf(context).width * 0.60,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 30),
+                              height: 15,
+                              width: MediaQuery.sizeOf(context).width * 0.45,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 5),
+                              height: 15,
+                              width: MediaQuery.sizeOf(context).width,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 30),
+                              height: 15,
+                              width: MediaQuery.sizeOf(context).width * 0.60,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 25),
+                              height: 20,
+                              width: MediaQuery.sizeOf(context).width,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            Container(
+                              height: 35,
+                              width: MediaQuery.sizeOf(context).width,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                 ],
+              )
+            : FadeAnimation(
+                0.2,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 15,
+                          ),
+                          width: MediaQuery.sizeOf(context).width,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(36, 249, 1, 129),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                width: 1,
+                                color: const Color.fromRGBO(249, 1, 131, 1.0),
+                              )),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: Data.map((index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        'Perusahaan ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${(index['nama_pemilik'])}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Poppins-bold',
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '${(index['nama_perusahaan'])}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins-bold',
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  index['koordinat'] == null
+                                      ? const Text(
+                                          '',
+                                        )
+                                      : Text(
+                                          '${(index['koordinat'])}',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins',
+                                            color: Colors.black26,
+                                          ),
+                                        ),
+                                  Text(
+                                    '${(index['alamat'])}',
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  index['koordinat'] == null
+                                      ? Belum_pinpoint()
+                                      : Sudah_pinpoint(),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        )),
+                  ],
+                ),
               ),
       ),
     );

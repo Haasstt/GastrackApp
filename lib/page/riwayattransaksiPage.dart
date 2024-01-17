@@ -3,8 +3,9 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrack/animation/animations.dart';
+import 'package:gastrack/loading.dart';
 import 'package:gastrack/provider/TransaksiProvider.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sp_util/sp_util.dart';
 
 class RiwayatTransaksiPage extends StatefulWidget {
@@ -41,7 +42,6 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
             });
           }
         });
-        EasyLoading.dismiss();
       } else if (value.statusCode == 422) {
         var pesan = value.body['message'];
         setState(() {
@@ -61,8 +61,8 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
           ),
           duration: const Duration(seconds: 3),
         ).show(context);
-        EasyLoading.dismiss();
       } else {
+        print(value.statusCode);
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
         setState(() {
           message = pesan;
@@ -81,13 +81,12 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
           ),
           duration: const Duration(seconds: 3),
         ).show(context);
-        EasyLoading.dismiss();
       }
     });
   }
 
   void GetDataDetail(id) {
-    EasyLoading.show();
+    customLoading(context);
     setState(() {
       DataDetail.clear();
     });
@@ -96,20 +95,21 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
     });
     TransaksiProvider().getDetailTransaksiUser(id).then((value) {
       if (value.statusCode == 200) {
+        Navigator.pop(context);
         var data = value.body['data'];
         setState(() {
           DataDetail.addAll([data]);
         });
         _showPopupDetailTransaksi(context);
-        EasyLoading.dismiss();
       } else if (value.statusCode == 422) {
+        Navigator.pop(context);
         var pesan = value.body['message'];
         setState(() {
           message = pesan;
           gagalmemuat = !gagalmemuat;
         });
-        EasyLoading.dismiss();
       } else {
+        Navigator.pop(context);
         var pesan = "Gagal Memuat, hubungkan perangkat ke jaringan";
         setState(() {
           message = pesan;
@@ -128,7 +128,6 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
           ),
           duration: const Duration(seconds: 3),
         ).show(context);
-        EasyLoading.dismiss();
       }
     });
   }
@@ -139,255 +138,296 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
     super.initState();
   }
 
+   Future<void> _refreshData() async {
+    await Future.delayed(const Duration(seconds: 2));
+    GetData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 120, left: 5, right: 5, bottom: 10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height,
-              child: Data.isEmpty
-                  ? Column(
-                      children: [
-                        Expanded(
-                          child: SizedBox(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                datakosong
-                                    ? Column(
-                                        children: [
-                                          Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            child: const Icon(
-                                              Icons.no_backpack_outlined,
-                                              size: 50,
-                                            ),
-                                          ),
-                                          Text(
-                                            '${(message)}',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : gagalmemuat
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SizedBox(
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 120, left: 5, right: 5, bottom: 10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child: Data.isEmpty
+                      ? Column(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    datakosong
                                         ? Column(
                                             children: [
                                               Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 5),
+                                                margin: const EdgeInsets.symmetric(
+                                                    vertical: 10),
                                                 child: const Icon(
-                                                  Icons.cloud_off,
+                                                  Icons.no_backpack_outlined,
                                                   size: 50,
-                                                  color: Colors.black26,
-                                                ),
-                                              ),
-                                              const Text(
-                                                'Offline',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : const CircularProgressIndicator(
-                                            strokeWidth: 1,
-                                            color: Color.fromRGBO(
-                                                249, 1, 131, 1.0),
-                                          )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  : ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: Data.length,
-                      itemBuilder: ((context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 255, 255, 255),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey
-                                    .withOpacity(0.25), // Warna bayangan
-                                spreadRadius:
-                                    0, // Seberapa jauh bayangan menyebar
-                                blurRadius: 4, // Seberapa kabur bayangan
-                                offset: const Offset(
-                                    0, 1), // Posisi bayangan (x, y)
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                FadeAnimation(
-                                  0.5,
-                                  SizedBox(
-                                    height: 90,
-                                    width: 200,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'resi ${(Data[index]['resi'])}',
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
-                                                'Total Tagihan',
-                                                style: TextStyle(
-                                                  fontSize: 10,
-                                                  fontFamily: 'Poppins',
-                                                  fontWeight: FontWeight.normal,
                                                 ),
                                               ),
                                               Text(
-                                                'Rp${(Data[index]['total_tagihan'])}',
+                                                '${(message)}',
                                                 style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontFamily: 'Poppins-bold',
+                                                  fontSize: 12,
+                                                  fontFamily: 'Poppins',
                                                   fontWeight: FontWeight.normal,
                                                 ),
                                               ),
                                             ],
+                                          )
+                                        : gagalmemuat
+                                            ? Column(
+                                                children: [
+                                                  Container(
+                                                    margin:
+                                                        const EdgeInsets.symmetric(
+                                                            vertical: 5),
+                                                    child: const Icon(
+                                                      Icons.cloud_off,
+                                                      size: 50,
+                                                      color: Colors.black26,
+                                                    ),
+                                                  ),
+                                                  const Text(
+                                                    'Offline',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight: FontWeight.normal,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : Stack(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 90,
+                                                    width: 90,
+                                                    child: Lottie.asset(
+                                                        'assets/js/loadingPage.json',
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  const Positioned(
+                                                    top: 65,
+                                                    child: SizedBox(
+                                                      width: 90,
+                                                      child: Text(
+                                                        'Memuat',
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: [
+                            Column(
+                              children: Data.map((index) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(vertical: 10),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius:
+                                        const BorderRadius.all(Radius.circular(20)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey
+                                            .withOpacity(0.25), // Warna bayangan
+                                        spreadRadius:
+                                            0, // Seberapa jauh bayangan menyebar
+                                        blurRadius: 4, // Seberapa kabur bayangan
+                                        offset: const Offset(
+                                            0, 1), // Posisi bayangan (x, y)
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        FadeAnimation(
+                                          0.5,
+                                          SizedBox(
+                                            height: 90,
+                                            width: 200,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  'resi ${(index['resi'])}',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin:
+                                                      const EdgeInsets.symmetric(
+                                                          vertical: 10),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      const Text(
+                                                        'Total Tagihan',
+                                                        style: TextStyle(
+                                                          fontSize: 10,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'Rp${(index['total_tagihan'])}',
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontFamily:
+                                                              'Poppins-bold',
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    GetDataDetail(
+                                                        index['id_transaksi']
+                                                            .toString());
+                                                  },
+                                                  child: const Text(
+                                                    'Detail Pemesanan',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontFamily: 'Poppins',
+                                                      color: Color.fromRGBO(
+                                                          249, 1, 131, 1.0),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            GetDataDetail(Data[index]
-                                                    ['id_transaksi']
-                                                .toString());
-                                          },
-                                          child: const Text(
-                                            'Detail Pemesanan',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily: 'Poppins',
-                                              color: Color.fromRGBO(
-                                                  249, 1, 131, 1.0),
+                                        FadeAnimation(
+                                          0.7,
+                                          SizedBox(
+                                            height: 90,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  '${(index['status_pembayaran'])}',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color.fromRGBO(
+                                                        249, 1, 131, 1.0),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                                FadeAnimation(
-                                  0.7,
-                                  SizedBox(
-                                    height: 90,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          '${(Data[index]['status_pembayaran'])}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromRGBO(
-                                                249, 1, 131, 1.0),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                );
+                              }).toList(),
                             ),
-                          ),
-                        );
-                      }),
+                          ],
+                        ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 40),
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color.fromRGBO(249, 1, 131, 1.0),
+                        Color.fromRGBO(128, 38, 198, 1.0)
+                      ],
                     ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(top: 40),
-            width: double.infinity,
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color.fromRGBO(249, 1, 131, 1.0),
-                    Color.fromRGBO(128, 38, 198, 1.0)
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    )),
+                child: Row(
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                      height: 50,
+                      width: 50,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Text(
+                        "Riwayat Transaksi",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: "Poppins-bold",
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 50,
+                    ),
                   ],
                 ),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                )),
-            child: Row(
-              children: [
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                  height: 50,
-                  width: 50,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back,
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  child: Text(
-                    "Riwayat Transaksi",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: "Poppins-bold",
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 50,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -772,7 +812,7 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          '${(index['pesanan_awal']['jumlah_pesanan'].toString())} bar',
+                                                          '${(index['pesanan_awal']['jumlah_bar'].toString())} bar',
                                                           style:
                                                               const TextStyle(
                                                             fontFamily:
@@ -908,7 +948,7 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          '${(index['pesanan_akhir']['jumlah_pesanan'].toString())} bar',
+                                                          '${(index['pesanan_akhir']['jumlah_bar'].toString())} bar',
                                                           style:
                                                               const TextStyle(
                                                             fontFamily:
@@ -1055,7 +1095,7 @@ class _MyHomePageState extends State<RiwayatTransaksiPage> {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                '${item['jumlah_pesanan']} bar',
+                                                                '${item['jumlah_bar']} bar',
                                                                 style:
                                                                     const TextStyle(
                                                                   fontFamily:
